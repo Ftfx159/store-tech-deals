@@ -1,0 +1,73 @@
+.fomoToast {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  z-index: 9998;
+  background: rgba(17, 24, 39, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1), slideOut 0.5s ease-in 3.5s forwards;
+  max-width: 350px;
+}
+
+.fomoIcon {
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 2s infinite;
+}
+
+.fomoContent {
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.fomoContent strong {
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .fomoToast {
+    bottom: auto;
+    top: 24px;
+    left: 16px;
+    right: 16px;
+    max-width: 100%;
+    animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1), slideUpOut 0.5s ease-in 3.5s forwards;
+  }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUpOut {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100%); opacity: 0; }
+}

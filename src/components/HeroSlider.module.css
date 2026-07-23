@@ -1,0 +1,100 @@
+.heroGraphic {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.graphicCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-primary), #60a5fa);
+  animation: pulse 4s infinite alternate;
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+  z-index: 0;
+}
+
+.imageWrapper {
+  position: relative;
+  z-index: 1;
+  width: 80%;
+  height: 80%;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Luxury easing */
+  will-change: transform, opacity, filter;
+}
+
+.heroMainImage {
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+  transform: rotate(-3deg);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  height: 100%;
+  background: white; 
+}
+
+.heroGraphic:hover .heroMainImage {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+}
+
+.graphicCard {
+  position: absolute;
+  bottom: -10px;
+  left: -20px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 24px 32px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  text-align: center;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+.percentBadge {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent-success);
+  display: block;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.graphicCard p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+.fadeOut {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  filter: blur(8px);
+}

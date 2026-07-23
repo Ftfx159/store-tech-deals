@@ -1,0 +1,84 @@
+.footer {
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 60px;
+  padding-top: 60px;
+}
+
+.footerContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 40px;
+  padding-bottom: 40px;
+}
+
+.brandSection .logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.tagline {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.linksSection h3, .disclosureSection h3 {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.linksSection ul {
+  list-style: none;
+  padding: 0;
+}
+
+.linksSection li {
+  margin-bottom: 12px;
+}
+
+.linksSection a {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  font-size: 0.9rem;
+}
+
+.linksSection a:hover {
+  color: var(--accent-primary);
+}
+
+.disclosureSection p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.bottomBar {
+  background: #f1f5f9;
+  padding: 20px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .footerContainer {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}

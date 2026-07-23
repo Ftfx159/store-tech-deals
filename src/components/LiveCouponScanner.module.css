@@ -1,0 +1,114 @@
+.scanBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  min-width: 220px;
+  justify-content: center;
+}
+
+.scanning {
+  background: var(--text-secondary);
+  cursor: wait;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px) scale(0.95); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.successIcon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.modalContent h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.modalContent p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.couponCard {
+  background: #f8fafc;
+  border: 1px dashed rgba(59, 130, 246, 0.3);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.discount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent-success);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.applyBtn {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.applyBtn.copied {
+  background: var(--accent-success);
+  border-color: var(--accent-success);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+.closeBtn:hover {
+  text-decoration: underline;
+  color: var(--text-primary);
+}

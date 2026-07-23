@@ -1,0 +1,17 @@
+.buyBtn {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.copiedState {
+  background: var(--accent-success) !important;
+  color: white !important;
+  border-color: var(--accent-success) !important;
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}

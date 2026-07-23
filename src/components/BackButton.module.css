@@ -1,0 +1,27 @@
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px 8px 0;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.backBtn:hover {
+  color: var(--accent-primary);
+  transform: translateX(-3px);
+}
+
+.backBtn svg {
+  transition: transform 0.2s ease;
+}
+
+.backBtn:hover svg {
+  transform: translateX(-3px);
+}

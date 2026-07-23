@@ -1,0 +1,259 @@
+.advancedWrapper {
+  margin: 40px 0;
+}
+
+.headerArea {
+  margin-bottom: 24px;
+}
+
+.heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.pulseIcon {
+  display: inline-block;
+  animation: pulseIcon 2.5s infinite ease-in-out;
+}
+
+@keyframes pulseIcon {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+}
+
+/* 3D Container Magic */
+.matrix3DContainer {
+  width: 100%;
+  border-radius: 20px;
+  background: radial-gradient(circle at center, var(--surface) 0%, var(--background) 100%);
+  border: 1px solid var(--border);
+  position: relative;
+  perspective: 1200px;
+  padding: 32px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+}
+
+.matrixInner {
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+.cssGridMatrix {
+  display: grid;
+  gap: 12px;
+  transform-style: preserve-3d;
+}
+
+/* Base Cells */
+.gridCell {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: all 0.3s ease;
+}
+
+.featureLabel {
+  background: transparent;
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  align-items: flex-end;
+  text-align: right;
+  padding-right: 20px;
+}
+
+/* Main Column (3D Pop-out) */
+.mainCol {
+  transform: translateZ(20px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--primary);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
+  position: relative;
+  z-index: 10;
+}
+
+.youAreViewingBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Header Cells */
+.headerCell {
+  justify-content: flex-start;
+  padding-top: 24px;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 12px;
+}
+
+.image {
+  object-fit: contain;
+}
+
+.titleLink {
+  text-decoration: none;
+}
+
+.productName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.titleLink:hover .productName {
+  color: var(--primary);
+}
+
+/* Verdict Row */
+.verdictBadge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Value Score Row */
+.scoreRing {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.scoreRing small {
+  font-size: 0.6rem;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+/* Price Row */
+.priceData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.currentPrice {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.originalPrice {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  margin-top: 4px;
+}
+
+/* Discount Depth Row */
+.discountBarBg {
+  width: 100%;
+  height: 6px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 3px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.discountBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  border-radius: 3px;
+}
+.discountText {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-success);
+}
+
+/* Price Per Star */
+.pricePerStar {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Rating */
+.ratingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stars {
+  color: #fbbf24;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+.score {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .matrix3DContainer {
+    padding: 16px;
+    overflow-x: auto; /* Allow horizontal scrolling on mobile */
+    perspective: none; /* Disable 3D tilt on mobile for better UX */
+  }
+  
+  .cssGridMatrix {
+    min-width: 800px; /* Force minimum width to maintain grid structure */
+  }
+  
+  .featureLabel {
+    padding-right: 10px;
+    font-size: 0.75rem;
+  }
+}
