@@ -29,13 +29,31 @@ const fallbackProducts = [
   { id: 'B0B3CQBRB4', name: 'Sony WH-1000XM5 Wireless Active Noise Cancelling Headphones', brand: 'Sony', category: 'Audio', rating: 4.6, reviews: 8900, originalPrice: 34990, discountedPrice: 29990, primeEligible: true, inStock: true, features: ['Industry leading noise cancellation', '30-hour battery life', 'Crystal clear hands-free calling'], amazonUrl: 'https://amazon.in/dp/B0B3CQBRB4', imageUrl: 'https://m.media-amazon.com/images/I/51aXvjzcukL._SX679_.jpg', tags: ['audio', 'premium'], couponCode: null },
   { id: 'B0BMG3B38J', name: 'Samsung Galaxy S23 Ultra 5G (Green, 12GB, 256GB Storage)', brand: 'Samsung', category: 'Smartphones', rating: 4.7, reviews: 6540, originalPrice: 149999, discountedPrice: 124999, primeEligible: true, inStock: true, features: ['200MP camera', 'Snapdragon 8 Gen 2', 'S-Pen included'], amazonUrl: 'https://amazon.in/dp/B0BMG3B38J', imageUrl: 'https://m.media-amazon.com/images/I/61VfL-aiToL._SX679_.jpg', tags: ['premium', 'smartphone'], couponCode: 'SAMSUNG23' },
   { id: 'B0C781QQ1C', name: 'Dell XPS 15 9530 Laptop, Intel Core i7-13700H', brand: 'Dell', category: 'Laptops', rating: 4.5, reviews: 430, originalPrice: 254990, discountedPrice: 224990, primeEligible: true, inStock: true, features: ['15.6" OLED display', '16GB DDR5 RAM', '1TB SSD', 'RTX 4050'], amazonUrl: 'https://amazon.in/dp/B0C781QQ1C', imageUrl: 'https://m.media-amazon.com/images/I/61Nl5c9vXJL._SX679_.jpg', tags: ['laptop', 'premium'], couponCode: 'DELLVIP' },
-  { id: 'B0C9QPD6XZ', name: 'LG 27" Ultragear OLED QHD Gaming Monitor', brand: 'LG', category: 'Monitors', rating: 4.9, reviews: 120, originalPrice: 95000, discountedPrice: 82990, primeEligible: true, inStock: true, features: ['240Hz Refresh Rate', '0.03ms Response Time', 'G-Sync Compatible'], amazonUrl: 'https://amazon.in/dp/B0C9QPD6XZ', imageUrl: 'https://m.media-amazon.com/images/I/71wLpW80e+L._SX679_.jpg', tags: ['gaming', 'monitor'], couponCode: null }
+  { id: 'B0C9QPD6XZ', name: 'LG 27" Ultragear OLED QHD Gaming Monitor', brand: 'LG', category: 'Monitors', rating: 4.9, reviews: 120, originalPrice: 95000, discountedPrice: 82990, primeEligible: true, inStock: true, features: ['240Hz Refresh Rate', '0.03ms Response Time', 'G-Sync Compatible'], amazonUrl: 'https://amazon.in/dp/B0C9QPD6XZ', imageUrl: 'https://m.media-amazon.com/images/I/71wLpW80e+L._SX679_.jpg', tags: ['gaming', 'monitor'], couponCode: null },
+  { id: 'B0BDHWDR12', name: 'Apple AirPods Pro (2nd Generation)', brand: 'Apple', category: 'Audio', rating: 4.8, reviews: 21500, originalPrice: 24900, discountedPrice: 20999, primeEligible: true, inStock: true, features: ['Active Noise Cancellation', 'Spatial Audio', 'MagSafe Charging Case'], amazonUrl: 'https://amazon.in/dp/B0BDHWDR12', imageUrl: 'https://m.media-amazon.com/images/I/61SUj2aKoEL._SX679_.jpg', tags: ['audio', 'apple'], couponCode: null },
+  { id: 'B09F6VMM1R', name: 'Sony PlayStation 5 Console', brand: 'Sony', category: 'Gaming', rating: 4.9, reviews: 18000, originalPrice: 54990, discountedPrice: 49990, primeEligible: true, inStock: true, features: ['Ultra-High Speed SSD', 'Ray Tracing', '4K-TV Gaming'], amazonUrl: 'https://amazon.in/dp/B09F6VMM1R', imageUrl: 'https://m.media-amazon.com/images/I/51mWHXY8hyL._SX679_.jpg', tags: ['gaming', 'console'], couponCode: 'GAMEON' },
+  { id: 'B08L5P1TWD', name: 'Logitech MX Master 3S Wireless Mouse', brand: 'Logitech', category: 'Accessories', rating: 4.7, reviews: 9400, originalPrice: 10995, discountedPrice: 8995, primeEligible: true, inStock: true, features: ['8K DPI Track-on-Glass', 'Quiet Clicks', 'USB-C Rechargeable'], amazonUrl: 'https://amazon.in/dp/B08L5P1TWD', imageUrl: 'https://m.media-amazon.com/images/I/61ni3t1ryQL._SX679_.jpg', tags: ['mouse', 'productivity'], couponCode: null },
+  { id: 'B0C725Y23V', name: 'Samsung Galaxy Watch 6 Bluetooth (44mm)', brand: 'Samsung', category: 'Wearables', rating: 4.6, reviews: 3100, originalPrice: 33999, discountedPrice: 27999, primeEligible: true, inStock: true, features: ['Sleep Coaching', 'ECG Monitor', 'Sapphire Crystal Glass'], amazonUrl: 'https://amazon.in/dp/B0C725Y23V', imageUrl: 'https://m.media-amazon.com/images/I/718L+u+-z3L._SX679_.jpg', tags: ['smartwatch', 'wearable'], couponCode: 'WATCH500' }
 ];
+
+function getFallbackProducts(keyword = '') {
+  const k = keyword.toLowerCase();
+  if (k.includes('lightning') || k.includes('flash')) {
+    return [fallbackProducts[0], fallbackProducts[1], fallbackProducts[5], fallbackProducts[8], fallbackProducts[6]];
+  }
+  if (k.includes('trending') || k.includes('popular') || k.includes('best selling')) {
+    return [fallbackProducts[2], fallbackProducts[3], fallbackProducts[6], fallbackProducts[4], fallbackProducts[0]];
+  }
+  if (k.includes('1000') || k.includes('budget') || k.includes('electronics under')) {
+    return [fallbackProducts[7], fallbackProducts[5], fallbackProducts[8], fallbackProducts[4], fallbackProducts[1]];
+  }
+  return fallbackProducts.slice(0, 5);
+}
 
 export async function searchAmazonProducts(keyword, category = 'Electronics', options = {}) {
   if (!hasCredentials) {
     console.error("CRITICAL: RapidAPI Key is missing. Falling back to cached data.");
-    return fallbackProducts;
+    return getFallbackProducts(keyword);
   }
 
   try {
@@ -62,7 +80,7 @@ export async function searchAmazonProducts(keyword, category = 'Electronics', op
 
     if (!response.ok) {
       console.warn(`RapidAPI warning: ${response.status} - Likely 429 Too Many Requests (Rate limit hit).`);
-      return fallbackProducts;
+      return getFallbackProducts(keyword);
     }
 
     const json = await response.json();
@@ -72,13 +90,13 @@ export async function searchAmazonProducts(keyword, category = 'Electronics', op
       if (options.maxPrice) {
         products = products.filter(p => p.discountedPrice <= options.maxPrice);
       }
-      return products.length > 0 ? products.slice(0, 10) : fallbackProducts;
+      return products.length > 0 ? products.slice(0, 10) : getFallbackProducts(keyword);
     }
     
-    return fallbackProducts;
+    return getFallbackProducts(keyword);
   } catch (error) {
     console.error("RapidAPI Search Error:", error);
-    return fallbackProducts;
+    return getFallbackProducts(keyword);
   }
 }
 
