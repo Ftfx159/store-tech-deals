@@ -2,6 +2,7 @@ import { searchProducts, products } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import BackButton from "@/components/BackButton";
 import SearchFilters from "@/components/SearchFilters";
+export const dynamic = 'force-dynamic';
 import styles from "./page.module.css";
 import Link from "next/link";
 

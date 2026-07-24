@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import styles from "./page.module.css";
 import ProductSlider from "@/components/ProductSlider";
 import SecretDealVault from "@/components/SecretDealVault";
