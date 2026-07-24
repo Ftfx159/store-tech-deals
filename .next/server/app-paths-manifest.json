@@ -1,0 +1,13 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/flash-deals/page": "app/flash-deals/page.js",
+  "/guide/page": "app/guide/page.js",
+  "/icon.png/route": "app/icon.png/route.js",
+  "/page": "app/page.js",
+  "/product/[id]/page": "app/product/[id]/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/search/page": "app/search/page.js",
+  "/setup/page": "app/setup/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js"
+}

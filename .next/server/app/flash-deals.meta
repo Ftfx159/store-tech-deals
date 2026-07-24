@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/flash-deals/layout,_N_T_/flash-deals/page,_N_T_/flash-deals"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/flash-deals/__PAGE__",
+    "/flash-deals",
+    "/_index",
+    "/_head"
+  ]
+}
