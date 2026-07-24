@@ -1,6 +1,6 @@
 .footer {
-  background: #050505;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   margin-top: 60px;
   padding-top: 60px;
 }
@@ -62,14 +62,14 @@
   color: var(--text-secondary);
   font-size: 0.85rem;
   line-height: 1.6;
-  background: #111111;
+  background: #f8fafc;
   padding: 16px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .bottomBar {
-  background: #0a0a0a;
+  background: #f1f5f9;
   padding: 20px 0;
   text-align: center;
   color: var(--text-secondary);
