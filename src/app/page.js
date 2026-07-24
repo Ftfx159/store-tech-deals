@@ -9,8 +9,12 @@ import { getProductsByTag } from "@/lib/products";
 import Link from "next/link";
 
 export default async function Home() {
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
   const lightningDeals = await getProductsByTag("Lightning Deals");
+  await delay(1100); // Wait 1.1s to avoid RapidAPI 1 Request/Second limit
   const trendingProducts = await getProductsByTag("Trending Products");
+  await delay(1100);
   const under1000 = await getProductsByTag("Under ₹1000");
   
   // Calculate live coupon stats from the fetched real data

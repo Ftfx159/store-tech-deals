@@ -53,7 +53,8 @@ export async function searchAmazonProducts(keyword, category = 'Electronics', op
     });
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      console.warn(`RapidAPI warning: ${response.status} - Likely 429 Too Many Requests (Rate limit hit).`);
+      return [];
     }
 
     const json = await response.json();
@@ -88,7 +89,10 @@ export async function getAmazonProductByASIN(asin) {
       next: { revalidate: 3600 }
     });
 
-    if (!response.ok) return null;
+    if (!response.ok) {
+      console.warn(`RapidAPI details warning: ${response.status} - Likely 429 Too Many Requests.`);
+      return null;
+    }
 
     const json = await response.json();
     if (json.data) {
