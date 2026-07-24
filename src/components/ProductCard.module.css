@@ -35,9 +35,11 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4/3;
-  background: #f8fafc;
+  background: white; /* Keep white for product images which often have white bgs */
   overflow: hidden;
   display: block;
+  flex-shrink: 0;
+  min-height: 200px;
 }
 
 .image {
