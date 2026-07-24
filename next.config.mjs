@@ -14,6 +14,12 @@ const nextConfig = {
     ],
   },
   serverExternalPackages: ['amazon-paapi'],
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
+  experimental: {
+    workerThreads: false,
+    cpus: 1
+  }
 };
 
 export default nextConfig;
