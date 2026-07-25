@@ -1,7 +1,93 @@
 import { searchAmazonProducts, getAmazonProductByASIN } from './amazonApi';
+import { prisma } from '@/lib/prisma';
 
-// No more mock local coupons or fake generated coupons.
-// The data returned from amazonApi.js is 100% real RapidAPI data.
+// Helper function to sync and cache live data
+async function fetchAndCacheProducts(query, options = {}) {
+  const normalizedQuery = query.toLowerCase().trim();
+
+  try {
+    // 1. Try to find in Database (Intelligent Caching)
+    const cachedProducts = await prisma.product.findMany({
+      where: {
+        searchQuery: normalizedQuery,
+        inStock: true
+      },
+      orderBy: {
+        lastUpdated: 'desc'
+      },
+      take: 10
+    });
+
+    // Check if we have recent enough results (within 24 hours)
+    const hasValidCache = cachedProducts.length > 0 && 
+      (new Date() - new Date(cachedProducts[0].lastUpdated)) < 24 * 60 * 60 * 1000;
+
+    if (hasValidCache) {
+      console.log(`[Cache Hit] Serving "${query}" from local database.`);
+      return cachedProducts;
+    }
+
+    // 2. Fetch Live from Amazon API
+    console.log(`[Cache Miss] Fetching live data from Amazon for "${query}"`);
+    const liveProducts = await searchAmazonProducts(query, 'Electronics', options);
+
+    if (!liveProducts || liveProducts.length === 0) return cachedProducts;
+
+    // 3. Save / Update in Database asynchronously
+    const savedProducts = [];
+    for (const p of liveProducts) {
+      try {
+        const upsertedProduct = await prisma.product.upsert({
+          where: { id: p.id },
+          update: {
+            name: p.name,
+            brand: p.brand || null,
+            category: p.category || null,
+            rating: p.rating || 0,
+            reviews: p.reviews || 0,
+            originalPrice: p.originalPrice || p.discountedPrice,
+            discountedPrice: p.discountedPrice,
+            primeEligible: p.primeEligible || false,
+            inStock: p.inStock !== false,
+            imageUrl: p.imageUrl,
+            amazonUrl: p.amazonUrl,
+            couponCode: p.couponCode || null,
+            searchQuery: normalizedQuery,
+            lastUpdated: new Date()
+          },
+          create: {
+            id: p.id,
+            name: p.name,
+            brand: p.brand || null,
+            category: p.category || null,
+            rating: p.rating || 0,
+            reviews: p.reviews || 0,
+            originalPrice: p.originalPrice || p.discountedPrice,
+            discountedPrice: p.discountedPrice,
+            primeEligible: p.primeEligible || false,
+            inStock: p.inStock !== false,
+            features: p.features ? JSON.stringify(p.features) : null,
+            amazonUrl: p.amazonUrl,
+            imageUrl: p.imageUrl,
+            tags: p.tags ? JSON.stringify(p.tags) : null,
+            couponCode: p.couponCode || null,
+            searchQuery: normalizedQuery
+          }
+        });
+        savedProducts.push(upsertedProduct);
+      } catch (dbErr) {
+        console.error(`Failed to save product ${p.id} to DB:`, dbErr);
+        // still return the live product even if DB fails
+        savedProducts.push(p); 
+      }
+    }
+
+    return savedProducts;
+  } catch (err) {
+    console.error("Error in fetchAndCacheProducts:", err);
+    return await searchAmazonProducts(query, 'Electronics', options); // Fallback directly to API
+  }
+}
 
 export async function getProductsByTag(tag) {
   // Convert tag to a search query for Amazon PA API
@@ -12,22 +98,32 @@ export async function getProductsByTag(tag) {
   };
   
   const query = queryMap[tag] || tag;
-  const liveData = await searchAmazonProducts(query);
-  return liveData; // Return directly, no more applyLocalCoupons
+  return await fetchAndCacheProducts(query);
 }
 
 export async function getProductById(id) {
+  try {
+    // Try DB first
+    const cachedProduct = await prisma.product.findUnique({ where: { id } });
+    if (cachedProduct && (new Date() - new Date(cachedProduct.lastUpdated)) < 24 * 60 * 60 * 1000) {
+      return cachedProduct;
+    }
+  } catch(e) {}
+  
   const product = await getAmazonProductByASIN(id);
-  return product; // Return directly
+  if (product && product.id) {
+    // Fire and forget save
+    prisma.product.upsert({
+      where: { id: product.id },
+      update: { discountedPrice: product.discountedPrice, inStock: product.inStock, lastUpdated: new Date() },
+      create: { ...product, originalPrice: product.originalPrice || product.discountedPrice, searchQuery: 'ASIN_LOOKUP' }
+    }).catch(() => {});
+  }
+  return product;
 }
 
 export async function getFlashDeals() {
-  // Fetch from computers and electronics categories
-  const queries = ["laptops", "smartphones", "headphones"];
-  // Randomly pick one query to keep the flash deals fresh, or we could fetch all and combine.
-  // For simplicity and speed, we will fetch 'computers and electronics'
-  const liveData = await searchAmazonProducts("computers electronics", "Electronics");
-  
+  const liveData = await fetchAndCacheProducts("computers electronics");
   if (!liveData) return [];
 
   // Filter out products with less than 30% discount
@@ -57,13 +153,10 @@ export async function searchProducts(query) {
   else if (query === 'under10000') { maxPrice = 10000; keyword = "smartphones"; }
   else if (query === 'premium') { keyword = "premium tech"; }
 
-  // Try to use live API wrapper
-  const amazonResults = await searchAmazonProducts(keyword, 'Electronics', { maxPrice });
-  return amazonResults || [];
+  return await fetchAndCacheProducts(keyword, { maxPrice });
 }
 
 // Fallback to fetch some default trending items if no query is given
 export async function getTrendingProducts() {
-  const liveData = await searchAmazonProducts("popular electronics", "Electronics");
-  return liveData;
+  return await fetchAndCacheProducts("popular electronics");
 }

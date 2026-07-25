@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Product {
+  id              String   @id // ASIN
+  name            String
+  brand           String?
+  category        String?
+  rating          Float    @default(0)
+  reviews         Int      @default(0)
+  originalPrice   Float
+  discountedPrice Float
+  primeEligible   Boolean  @default(false)
+  inStock         Boolean  @default(true)
+  features        String?  // JSON stringified array
+  amazonUrl       String
+  imageUrl        String
+  tags            String?  // JSON stringified array
+  couponCode      String?
+  lastUpdated     DateTime @default(now()) @updatedAt
+  searchQuery     String?  // the keyword used to find this product
+}

@@ -11,7 +11,7 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   gap: 24px;
-  padding: 10px 48px;
+  padding: 10px 60px;
   scrollbar-width: none; /* Firefox */
   align-items: flex-start; /* Prevent vertical stretching */
 }
