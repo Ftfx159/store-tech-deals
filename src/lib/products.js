@@ -1,4 +1,4 @@
-import { searchAmazonProducts, getAmazonProductByASIN } from './amazonApi';
+import { searchAmazonProducts, getAmazonProductByASIN, getFallbackProducts } from './amazonApi';
 import { prisma } from '@/lib/prisma';
 
 // Helper function to sync and cache live data
@@ -31,7 +31,13 @@ async function fetchAndCacheProducts(query, options = {}) {
     console.log(`[Cache Miss] Fetching live data from Amazon for "${query}"`);
     const liveProducts = await searchAmazonProducts(query, 'Electronics', options);
 
-    if (!liveProducts || liveProducts.length === 0) return cachedProducts;
+    if (!liveProducts || liveProducts.length === 0) {
+      if (cachedProducts.length === 0) {
+        // Fallback to static data if both DB and API fail, but DO NOT CACHE it
+        return getFallbackProducts(query);
+      }
+      return cachedProducts;
+    }
 
     // 3. Save / Update in Database asynchronously
     const savedProducts = [];

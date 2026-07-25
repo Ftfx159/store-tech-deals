@@ -36,7 +36,7 @@ const fallbackProducts = [
   { id: 'B0C725Y23V', name: 'Samsung Galaxy Watch 6 Bluetooth (44mm)', brand: 'Samsung', category: 'Wearables', rating: 4.6, reviews: 3100, originalPrice: 33999, discountedPrice: 27999, primeEligible: true, inStock: true, features: ['Sleep Coaching', 'ECG Monitor', 'Sapphire Crystal Glass'], amazonUrl: 'https://www.amazon.in/s?k=Samsung+Galaxy+Watch+6', imageUrl: 'https://m.media-amazon.com/images/I/61L1ItFgFHL._SX679_.jpg', tags: ['smartwatch', 'wearable'], couponCode: 'WATCH500' }
 ];
 
-function getFallbackProducts(keyword = '') {
+export function getFallbackProducts(keyword = '') {
   const k = keyword.toLowerCase();
   if (k.includes('lightning') || k.includes('flash')) {
     return [fallbackProducts[0], fallbackProducts[1], fallbackProducts[5], fallbackProducts[8], fallbackProducts[6]];
@@ -52,8 +52,8 @@ function getFallbackProducts(keyword = '') {
 
 export async function searchAmazonProducts(keyword, category = 'Electronics', options = {}) {
   if (!hasCredentials) {
-    console.error("CRITICAL: RapidAPI Key is missing. Falling back to cached data.");
-    return getFallbackProducts(keyword);
+    console.error("CRITICAL: RapidAPI Key is missing. Returning null to trigger fallback in products.js.");
+    return null;
   }
 
   try {
@@ -75,12 +75,12 @@ export async function searchAmazonProducts(keyword, category = 'Electronics', op
         'x-rapidapi-host': RAPIDAPI_HOST,
         'x-rapidapi-key': RAPIDAPI_KEY
       },
-      next: { revalidate: 3600 } // Cache results for 1 hour to save API quota
+      next: { revalidate: 3600 }
     });
 
     if (!response.ok) {
       console.warn(`RapidAPI warning: ${response.status} - Likely 429 Too Many Requests (Rate limit hit).`);
-      return getFallbackProducts(keyword);
+      return null;
     }
 
     const json = await response.json();
@@ -90,13 +90,13 @@ export async function searchAmazonProducts(keyword, category = 'Electronics', op
       if (options.maxPrice) {
         products = products.filter(p => p.discountedPrice <= options.maxPrice);
       }
-      return products.length > 0 ? products.slice(0, 10) : getFallbackProducts(keyword);
+      return products.length > 0 ? products.slice(0, 10) : null;
     }
     
-    return getFallbackProducts(keyword);
+    return null;
   } catch (error) {
     console.error("RapidAPI Search Error:", error);
-    return getFallbackProducts(keyword);
+    return null;
   }
 }
 
@@ -145,7 +145,7 @@ function formatAmazonResponse(items) {
       brand: 'Amazon Partner', // RapidAPI search doesn't easily expose Brand
       category: 'Electronics',
       rating: parseFloat(item.product_star_rating) || 4.0,
-      reviews: item.product_num_ratings || 0, 
+      reviews: parseInt((item.product_num_ratings || '0').toString().replace(/,/g, ''), 10) || 0,
       originalPrice: originalPrice,
       discountedPrice: price,
       primeEligible: item.is_prime || false,

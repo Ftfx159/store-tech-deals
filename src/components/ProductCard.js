@@ -92,9 +92,9 @@ export default function ProductCard({ product }) {
         
         <div className={styles.bottomSection}>
           <div className={styles.rating}>
-            <span className={styles.stars}>{"★".repeat(Math.floor(product.rating))}</span>
-            <span className={styles.ratingScore}>{product.rating}</span>
-            <span className={styles.reviews}>({product.reviews.toLocaleString()} reviews)</span>
+            <span className={styles.stars}>{"★".repeat(Math.max(0, Math.floor(product.rating || 0)))}</span>
+            <span className={styles.ratingScore}>{product.rating || 0}</span>
+            <span className={styles.reviews}>({(product.reviews || 0).toLocaleString()} reviews)</span>
           </div>
           
           <div className={styles.pricing}>
