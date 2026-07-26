@@ -38,13 +38,13 @@ const fallbackProducts = [
 
 export function getFallbackProducts(keyword = '') {
   const k = keyword.toLowerCase();
-  if (k.includes('lightning') || k.includes('flash')) {
+  if (k.includes('sale') || k.includes('flash') || k.includes('lightning')) {
     return [fallbackProducts[0], fallbackProducts[1], fallbackProducts[5], fallbackProducts[8], fallbackProducts[6]];
   }
-  if (k.includes('trending') || k.includes('popular') || k.includes('best selling')) {
+  if (k.includes('trending') || k.includes('popular') || k.includes('best selling') || k.includes('laptops')) {
     return [fallbackProducts[2], fallbackProducts[3], fallbackProducts[6], fallbackProducts[4], fallbackProducts[0]];
   }
-  if (k.includes('1000') || k.includes('budget') || k.includes('electronics under')) {
+  if (k.includes('1000') || k.includes('budget') || k.includes('under')) {
     return [fallbackProducts[7], fallbackProducts[5], fallbackProducts[8], fallbackProducts[4], fallbackProducts[1]];
   }
   return fallbackProducts.slice(0, 5);

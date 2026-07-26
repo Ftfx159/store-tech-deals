@@ -35,18 +35,17 @@
 .imageContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
-  background: white; /* Keep white for product images which often have white bgs */
-  overflow: hidden;
-  display: block;
-  flex-shrink: 0;
-  min-height: 200px;
+  height: 220px;
+  background: #fff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .image {
   object-fit: contain;
-  padding: 20px;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover .image {
@@ -64,28 +63,25 @@
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
-  flex-wrap: wrap;
   align-items: center;
 }
 
 .verifiedBadge {
-  background: rgba(16, 185, 129, 0.05);
-  color: var(--accent-success);
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  text-transform: uppercase;
+  color: var(--accent-success);
+  background: rgba(0, 210, 140, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(16, 185, 129, 0.15);
+  text-transform: uppercase;
 }
 
 .primeBadge {
-  color: #00a8e1; /* Amazon Prime blue */
-  font-weight: 800;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #00A8E1;
   font-style: italic;
-  font-size: 0.9rem;
-  letter-spacing: -0.5px;
 }
 
 .tag {
@@ -98,8 +94,13 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.titleWrapper {
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
 .title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   line-height: 1.4;
   margin-bottom: 6px;

@@ -98,9 +98,9 @@ async function fetchAndCacheProducts(query, options = {}) {
 export async function getProductsByTag(tag) {
   // Convert tag to a search query for Amazon PA API
   const queryMap = {
-    "Lightning Deals": "lightning deals electronics",
+    "Lightning Deals": "electronics sale",
     "Trending Products": "best selling laptops",
-    "Under ₹1000": "electronics under 1000",
+    "Under ₹1000": "gadgets under 1000",
   };
   
   const query = queryMap[tag] || tag;

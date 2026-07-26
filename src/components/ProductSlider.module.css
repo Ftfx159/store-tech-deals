@@ -11,9 +11,9 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   gap: 24px;
-  padding: 10px 60px;
+  padding: 20px 80px;
   scrollbar-width: none; /* Firefox */
-  align-items: flex-start; /* Prevent vertical stretching */
+  align-items: stretch; /* Make all cards equal height */
 }
 
 .slider::-webkit-scrollbar {
@@ -22,7 +22,7 @@
 
 .slideItem {
   flex: 0 0 300px;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   height: auto;
 }
 
@@ -30,12 +30,12 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,11 +52,11 @@
 }
 
 .leftBtn {
-  left: 0;
+  left: 10px;
 }
 
 .rightBtn {
-  right: 0;
+  right: 10px;
 }
 
 .emptyState {
