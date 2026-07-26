@@ -20,12 +20,24 @@ export async function POST(request) {
     });
 
     const queries = products.map(p => p.searchQuery).filter(Boolean);
-    console.log(`[Sync API] Found ${queries.length} queries to resync.`);
+    
+    // Add "Discovery" queries to force searching for entirely new deals
+    const discoveryQueries = [
+      "new tech gadgets",
+      "latest electronics releases",
+      "best smartphones",
+      "gaming accessories sale"
+    ];
+    
+    // Combine existing queries with discovery queries, ensuring uniqueness
+    const allQueries = [...new Set([...queries, ...discoveryQueries])];
+
+    console.log(`[Sync API] Found ${allQueries.length} queries to sync (including discovery mode).`);
 
     let totalUpdated = 0;
 
     // 2. Resync each query
-    for (const query of queries) {
+    for (const query of allQueries) {
       console.log(`[Sync API] Resyncing query: "${query}"`);
       // We wrap in try-catch so one failing query doesn't crash the whole sync
       try {
