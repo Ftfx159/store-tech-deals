@@ -16,9 +16,15 @@ export default async function Home() {
   const trendingProducts = await getProductsByTag("Trending Products");
   await delay(1100);
   const under1000 = await getProductsByTag("Under ₹1000");
+  await delay(1100);
+  const smartHome = await getProductsByTag("Smart Home");
+  await delay(1100);
+  const pcParts = await getProductsByTag("PC Components");
+  await delay(1100);
+  const creatorTech = await getProductsByTag("Creator Tech");
   
   // Calculate live coupon stats from the fetched real data
-  const allProducts = [...lightningDeals, ...trendingProducts, ...under1000];
+  const allProducts = [...lightningDeals, ...trendingProducts, ...under1000, ...smartHome, ...pcParts, ...creatorTech];
   const productsWithCoupons = allProducts.filter(p => p.couponCode);
   const totalCodes = productsWithCoupons.length > 0 ? productsWithCoupons.length : 3; // Fallback to 3 if none found
   
@@ -87,6 +93,38 @@ export default async function Home() {
               { 
                 name: 'Accessories', 
                 icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="2" width="12" height="20" rx="4" ry="4"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              },
+              {
+                name: 'Pendrives',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect><path d="M9 2v4h6V2"></path></svg>
+              },
+              {
+                name: 'Memory Cards',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line></svg>
+              },
+              {
+                name: 'PC Parts',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              },
+              {
+                name: 'Smart Home',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              },
+              {
+                name: 'Creator Tech',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+              },
+              {
+                name: 'External HDDs',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="19" x2="12" y2="21"></line></svg>
+              },
+              {
+                name: 'Streaming Devices',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+              },
+              {
+                name: 'Google Products',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
               }
             ].map(cat => (
               <Link key={cat.name} href={`/search?q=${cat.name.toLowerCase()}`} className={styles.categoryCard}>
@@ -171,6 +209,51 @@ export default async function Home() {
           </Link>
         </div>
         <ProductSlider products={under1000} />
+      </RevealSection>
+
+      {/* PC Master Race & Storage */}
+      <RevealSection className={`container ${styles.section}`}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            <span className={`${styles.icon} float-icon`}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+            </span> PC Parts & Storage
+          </h2>
+          <Link href="/search?q=pc parts" className={styles.viewAll}>
+            View All &rarr;
+          </Link>
+        </div>
+        <ProductSlider products={pcParts} />
+      </RevealSection>
+
+      {/* Smart Home & Streaming */}
+      <RevealSection className={`container ${styles.section}`}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            <span className={`${styles.icon} pulse-icon`}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </span> Smart Home & Streaming
+          </h2>
+          <Link href="/search?q=smart home" className={styles.viewAll}>
+            View All &rarr;
+          </Link>
+        </div>
+        <ProductSlider products={smartHome} />
+      </RevealSection>
+
+      {/* Creator & Studio Tech */}
+      <RevealSection className={`container ${styles.section}`}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            <span className={`${styles.icon} spin-slow-icon`}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+            </span> Creator & Studio Tech
+          </h2>
+          <Link href="/search?q=creator tech" className={styles.viewAll}>
+            View All &rarr;
+          </Link>
+        </div>
+        <ProductSlider products={creatorTech} />
       </RevealSection>
 
       {/* FAQ Section */}

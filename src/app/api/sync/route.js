@@ -26,7 +26,15 @@ export async function POST(request) {
       "new tech gadgets",
       "latest electronics releases",
       "best smartphones",
-      "gaming accessories sale"
+      "gaming accessories sale",
+      "usb flash drive 128gb",
+      "micro sd memory card",
+      "pc graphics card processor",
+      "smart home devices alexa",
+      "streaming microphone webcam",
+      "external hard drive 1tb",
+      "amazon fire tv stick",
+      "google nest chromecast"
     ];
     
     // Combine existing queries with discovery queries, ensuring uniqueness

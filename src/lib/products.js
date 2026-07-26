@@ -101,6 +101,14 @@ export async function getProductsByTag(tag) {
     "Lightning Deals": "electronics sale",
     "Trending Products": "best selling laptops",
     "Under ₹1000": "gadgets under 1000",
+    "Pendrives & Storage": "usb flash drive",
+    "Memory Cards": "micro sd memory card",
+    "PC Components": "pc graphics card processor",
+    "Smart Home": "smart home devices alexa",
+    "Creator Tech": "streaming microphone webcam",
+    "External HDDs": "external hard drive 1tb",
+    "Streaming Devices": "amazon fire tv stick",
+    "Google Products": "google nest chromecast",
   };
   
   const query = queryMap[tag] || tag;
