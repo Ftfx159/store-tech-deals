@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const [isSyncing, setIsSyncing] = useState(false);
   const [logMessage, setLogMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [syncCategory, setSyncCategory] = useState('All');
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -30,8 +31,10 @@ export default function AdminDashboard() {
       const res = await fetch('/api/sync', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer dev-secret'
-        }
+          'Authorization': 'Bearer dev-secret',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ category: syncCategory })
       });
       
       const data = await res.json();
@@ -96,27 +99,49 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <button 
-          onClick={handleSync} 
-          disabled={isSyncing}
-          className={styles.syncBtn}
-        >
-          {isSyncing ? (
-            <>
-              <svg className={styles.spinIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
-              </svg>
-              Syncing... Please wait
-            </>
-          ) : (
-            <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21l-5.46-5.46"></path>
-              </svg>
-              Sync New Deals
-            </>
-          )}
-        </button>
+        <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
+          <select 
+            value={syncCategory} 
+            onChange={(e) => setSyncCategory(e.target.value)}
+            className={styles.inputField}
+            style={{ width: '250px', background: 'white' }}
+            disabled={isSyncing}
+          >
+            <option value="All">All Categories (Full Sync)</option>
+            <option value="electronics sale">Lightning Deals</option>
+            <option value="best selling laptops">Trending Products</option>
+            <option value="usb flash drive 128gb">Pendrives & Storage</option>
+            <option value="micro sd memory card">Memory Cards</option>
+            <option value="pc graphics card processor">PC Components</option>
+            <option value="smart home devices alexa">Smart Home</option>
+            <option value="streaming microphone webcam">Creator Tech</option>
+            <option value="external hard drive 1tb">External HDDs</option>
+            <option value="amazon fire tv stick">Streaming Devices</option>
+            <option value="google nest chromecast">Google Products</option>
+          </select>
+          <button 
+            onClick={handleSync} 
+            disabled={isSyncing}
+            className={styles.syncBtn}
+            style={{ marginTop: 0 }}
+          >
+            {isSyncing ? (
+              <>
+                <svg className={styles.spinIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+                </svg>
+                Syncing... Please wait
+              </>
+            ) : (
+              <>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21l-5.46-5.46"></path>
+                </svg>
+                Sync {syncCategory === 'All' ? 'All' : 'Category'}
+              </>
+            )}
+          </button>
+        </div>
 
         {logMessage && (
           <div className={styles.logBox}>

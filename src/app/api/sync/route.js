@@ -10,37 +10,54 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('[Sync API] Starting background catalog synchronization...');
+    let syncCategory = 'All';
+    try {
+      const body = await request.json();
+      if (body && body.category) {
+        syncCategory = body.category;
+      }
+    } catch(e) {
+      // Ignore if no JSON body
+    }
 
-    // 1. Get all distinct search queries we have cached
-    const products = await prisma.product.findMany({
-      select: { searchQuery: true },
-      distinct: ['searchQuery'],
-      where: { searchQuery: { not: null } }
-    });
+    console.log(`[Sync API] Starting background catalog synchronization. Target: ${syncCategory}`);
 
-    const queries = products.map(p => p.searchQuery).filter(Boolean);
-    
-    // Add "Discovery" queries to force searching for entirely new deals
-    const discoveryQueries = [
-      "new tech gadgets",
-      "latest electronics releases",
-      "best smartphones",
-      "gaming accessories sale",
-      "usb flash drive 128gb",
-      "micro sd memory card",
-      "pc graphics card processor",
-      "smart home devices alexa",
-      "streaming microphone webcam",
-      "external hard drive 1tb",
-      "amazon fire tv stick",
-      "google nest chromecast"
-    ];
-    
-    // Combine existing queries with discovery queries, ensuring uniqueness
-    const allQueries = [...new Set([...queries, ...discoveryQueries])];
+    let allQueries = [];
 
-    console.log(`[Sync API] Found ${allQueries.length} queries to sync (including discovery mode).`);
+    if (syncCategory !== 'All') {
+      // Sync only the specifically requested category
+      allQueries = [syncCategory];
+    } else {
+      // 1. Get all distinct search queries we have cached
+      const products = await prisma.product.findMany({
+        select: { searchQuery: true },
+        distinct: ['searchQuery'],
+        where: { searchQuery: { not: null } }
+      });
+
+      const queries = products.map(p => p.searchQuery).filter(Boolean);
+      
+      // Add "Discovery" queries to force searching for entirely new deals
+      const discoveryQueries = [
+        "new tech gadgets",
+        "latest electronics releases",
+        "best smartphones",
+        "gaming accessories sale",
+        "usb flash drive 128gb",
+        "micro sd memory card",
+        "pc graphics card processor",
+        "smart home devices alexa",
+        "streaming microphone webcam",
+        "external hard drive 1tb",
+        "amazon fire tv stick",
+        "google nest chromecast"
+      ];
+      
+      // Combine existing queries with discovery queries, ensuring uniqueness
+      allQueries = [...new Set([...queries, ...discoveryQueries])];
+    }
+
+    console.log(`[Sync API] Found ${allQueries.length} queries to sync.`);
 
     let totalUpdated = 0;
 
