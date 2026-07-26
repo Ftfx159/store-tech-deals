@@ -2,7 +2,7 @@ import { searchAmazonProducts, getAmazonProductByASIN, getFallbackProducts } fro
 import { prisma } from '@/lib/prisma';
 
 // Helper function to sync and cache live data
-async function fetchAndCacheProducts(query, options = {}) {
+export async function fetchAndCacheProducts(query, options = {}) {
   const normalizedQuery = query.toLowerCase().trim();
 
   try {
@@ -15,7 +15,7 @@ async function fetchAndCacheProducts(query, options = {}) {
       orderBy: {
         lastUpdated: 'desc'
       },
-      take: 10
+      take: 20
     });
 
     // Check if we have recent enough results (within 24 hours)
@@ -178,4 +178,20 @@ export async function searchProducts(query) {
 // Fallback to fetch some default trending items if no query is given
 export async function getTrendingProducts() {
   return await fetchAndCacheProducts("popular electronics");
+}
+
+export function getActiveSaleEvent() {
+  const month = new Date().getMonth(); // 0-indexed (0 = Jan, 11 = Dec)
+  
+  if (month >= 3 && month <= 5) {
+    return { name: "Amazon Summer Sale Live!", query: "amazon summer sale tech deals" };
+  } else if (month >= 8 && month <= 9) {
+    return { name: "Great Indian Festival Deals", query: "amazon great indian festival tech" };
+  } else if (month === 10) {
+    return { name: "Black Friday & Cyber Monday", query: "black friday cyber monday tech deals" };
+  } else if (month === 11 || month === 0) {
+    return { name: "New Year Tech Blowout", query: "new year tech sale" };
+  } else {
+    return { name: "Amazon Super Value Days", query: "super value days tech deals" };
+  }
 }

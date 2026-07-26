@@ -1,11 +1,11 @@
 export const dynamic = 'force-dynamic';
 import styles from "./page.module.css";
 import ProductSlider from "@/components/ProductSlider";
+import { getProductsByTag, getActiveSaleEvent, fetchAndCacheProducts } from "@/lib/products";
 import SecretDealVault from "@/components/SecretDealVault";
 import HeroSlider from "@/components/HeroSlider";
 import RevealSection from "@/components/RevealSection";
 import LiveCouponScanner from "@/components/LiveCouponScanner";
-import { getProductsByTag } from "@/lib/products";
 import Link from "next/link";
 
 export default async function Home() {
@@ -33,12 +33,17 @@ export default async function Home() {
   await delay(1100);
   const google = await getProductsByTag("Google Products");
   
+  // Get active seasonal sale
+  const activeSale = getActiveSaleEvent();
+  const saleProducts = await fetchAndCacheProducts(activeSale.query);
+  await delay(1100);
+  
   // Merge categories for the grouped sliders
-  const mergedPcStorage = [...pcParts.slice(0,4), ...pendrives.slice(0,4), ...memoryCards.slice(0,4), ...hdds.slice(0,4)];
-  const mergedSmartStreaming = [...smartHome.slice(0,6), ...streaming.slice(0,4), ...google.slice(0,4)];
+  const mergedPcStorage = [...pcParts.slice(0,6), ...pendrives.slice(0,4), ...memoryCards.slice(0,4), ...hdds.slice(0,6)];
+  const mergedSmartStreaming = [...smartHome.slice(0,8), ...streaming.slice(0,6), ...google.slice(0,6)];
 
   // Calculate live coupon stats from the fetched real data
-  const allProducts = [...lightningDeals, ...trendingProducts, ...under1000, ...smartHome, ...pcParts, ...creatorTech, ...pendrives, ...memoryCards, ...hdds, ...streaming, ...google];
+  const allProducts = [...lightningDeals, ...trendingProducts, ...under1000, ...smartHome, ...pcParts, ...creatorTech, ...pendrives, ...memoryCards, ...hdds, ...streaming, ...google, ...saleProducts];
   const productsWithCoupons = allProducts.filter(p => p.couponCode);
   const totalCodes = productsWithCoupons.length > 0 ? productsWithCoupons.length : 3; // Fallback to 3 if none found
   
@@ -86,6 +91,19 @@ export default async function Home() {
           </div>
         </div>
       </RevealSection>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.titleWithIcon}>
+            <span className={styles.iconPulse}>🔥</span>
+            <h2>{activeSale.name}</h2>
+          </div>
+          <Link href="/search" className={styles.viewAll}>
+            View All Deals &rarr;
+          </Link>
+        </div>
+        <ProductSlider products={saleProducts} />
+      </section>
 
       {/* Featured Categories */}
       <RevealSection className={styles.categories}>

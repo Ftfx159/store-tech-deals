@@ -151,7 +151,7 @@ export async function searchAmazonProducts(keyword, category = 'Electronics', op
       if (options.maxPrice) {
         products = products.filter(p => p.discountedPrice <= options.maxPrice);
       }
-      return products.length > 0 ? products.slice(0, 10) : null;
+      return products.length > 0 ? products.slice(0, 15) : null;
     }
     
     return null;
