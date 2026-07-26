@@ -22,9 +22,23 @@ export default async function Home() {
   const pcParts = await getProductsByTag("PC Components");
   await delay(1100);
   const creatorTech = await getProductsByTag("Creator Tech");
+  await delay(1100);
+  const pendrives = await getProductsByTag("Pendrives & Storage");
+  await delay(1100);
+  const memoryCards = await getProductsByTag("Memory Cards");
+  await delay(1100);
+  const hdds = await getProductsByTag("External HDDs");
+  await delay(1100);
+  const streaming = await getProductsByTag("Streaming Devices");
+  await delay(1100);
+  const google = await getProductsByTag("Google Products");
   
+  // Merge categories for the grouped sliders
+  const mergedPcStorage = [...pcParts.slice(0,4), ...pendrives.slice(0,4), ...memoryCards.slice(0,4), ...hdds.slice(0,4)];
+  const mergedSmartStreaming = [...smartHome.slice(0,6), ...streaming.slice(0,4), ...google.slice(0,4)];
+
   // Calculate live coupon stats from the fetched real data
-  const allProducts = [...lightningDeals, ...trendingProducts, ...under1000, ...smartHome, ...pcParts, ...creatorTech];
+  const allProducts = [...lightningDeals, ...trendingProducts, ...under1000, ...smartHome, ...pcParts, ...creatorTech, ...pendrives, ...memoryCards, ...hdds, ...streaming, ...google];
   const productsWithCoupons = allProducts.filter(p => p.couponCode);
   const totalCodes = productsWithCoupons.length > 0 ? productsWithCoupons.length : 3; // Fallback to 3 if none found
   
@@ -223,7 +237,7 @@ export default async function Home() {
             View All &rarr;
           </Link>
         </div>
-        <ProductSlider products={pcParts} />
+        <ProductSlider products={mergedPcStorage} />
       </RevealSection>
 
       {/* Smart Home & Streaming */}
@@ -238,7 +252,7 @@ export default async function Home() {
             View All &rarr;
           </Link>
         </div>
-        <ProductSlider products={smartHome} />
+        <ProductSlider products={mergedSmartStreaming} />
       </RevealSection>
 
       {/* Creator & Studio Tech */}
