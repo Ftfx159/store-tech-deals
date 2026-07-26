@@ -24,6 +24,12 @@ function decodeHtmlEntities(text) {
     .replace(/&gt;/g, '>');
 }
 
+// Helper to generate a contextual AI image if Amazon fails to provide one
+function getAiImageUrl(productName) {
+  const cleanName = productName ? productName.replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 80) : 'tech gadget';
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanName + ' premium tech product photography studio lighting')}?width=800&height=800&nologo=true`;
+}
+
 const fallbackProducts = [
   // Generic Fallbacks
   { id: 'B0CHX1W1XY', name: 'Apple iPhone 15 Pro (128 GB) - Natural Titanium', brand: 'Apple', category: 'Smartphones', rating: 4.8, reviews: 12450, originalPrice: 134900, discountedPrice: 127990, primeEligible: true, inStock: true, features: ['Forged in titanium', 'A17 Pro chip', '48MP Main camera'], amazonUrl: 'https://www.amazon.in/s?k=Apple+iPhone+15+Pro+128GB', imageUrl: 'https://m.media-amazon.com/images/I/81+GIkwqLIL._SX679_.jpg', tags: ['premium', 'smartphone'], couponCode: 'SAVE5000' },
@@ -207,7 +213,7 @@ function formatAmazonResponse(items) {
       inStock: true,
       features: [], // No features in search list
       amazonUrl: item.product_url,
-      imageUrl: item.product_photo || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800',
+      imageUrl: item.product_photo || getAiImageUrl(item.product_title),
       tags: [], 
       // STRICT POLICY: No fake coupons. If the API doesn't provide it, it's null.
       couponCode: item.coupon_text || null 
@@ -239,7 +245,7 @@ function formatDetailedResponse(item) {
     inStock: true,
     features: Array.isArray(item.about_product) ? item.about_product : (typeof item.about_product === 'string' ? [item.about_product] : []), 
     amazonUrl: item.product_url,
-    imageUrl: item.product_photo || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800',
+    imageUrl: item.product_photo || getAiImageUrl(item.product_title),
     tags: [], 
     couponCode: realCoupon
   };

@@ -19,6 +19,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.amazon.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'image.pollinations.ai',
+      },
     ],
   },
   serverExternalPackages: ['amazon-paapi'],
