@@ -92,18 +92,18 @@ export default async function Home() {
         </div>
       </RevealSection>
 
-      <section className={styles.section}>
+      <RevealSection className={`container ${styles.section}`}>
         <div className={styles.sectionHeader}>
-          <div className={styles.titleWithIcon}>
-            <span className={styles.iconPulse}>🔥</span>
-            <h2>{activeSale.name}</h2>
-          </div>
+          <h2 className={styles.sectionTitle}>
+            <span className={`${styles.icon} pulse-icon`}>🔥</span>
+            {activeSale.name}
+          </h2>
           <Link href="/search" className={styles.viewAll}>
             View All Deals &rarr;
           </Link>
         </div>
         <ProductSlider products={saleProducts} />
-      </section>
+      </RevealSection>
 
       {/* Featured Categories */}
       <RevealSection className={styles.categories}>
