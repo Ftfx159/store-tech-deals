@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   const handleLogin = (e) => {
     e.preventDefault();
     // Simple frontend protection to prevent random visitors from hitting the API
-    if (password === 'admin123') {
+    if (password === 'Tanish&2018') {
       setIsAuthenticated(true);
       setErrorMsg('');
     } else {
