@@ -9,6 +9,7 @@ import BuyButton from "./BuyButton";
 
 export default function ProductCard({ product }) {
   const [transform, setTransform] = useState("");
+  const [imgSrc, setImgSrc] = useState(product.imageUrl || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800');
   const cardRef = useRef(null);
   const { toggleWishlist, isInWishlist } = useStorage();
 
@@ -68,12 +69,13 @@ export default function ProductCard({ product }) {
       
       <Link href={`/product/${product.id}`} className={styles.imageContainer}>
         <Image 
-          src={product.imageUrl} 
-          alt={product.name}
+          src={imgSrc} 
+          alt={product.name || 'Product Image'}
           fill
           loading="lazy"
           className={styles.image}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          onError={() => { setImgSrc('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800') }}
         />
       </Link>
       
