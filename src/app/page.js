@@ -105,70 +105,6 @@ export default async function Home() {
         <ProductSlider products={saleProducts} />
       </RevealSection>
 
-      {/* Featured Categories */}
-      <RevealSection className={styles.categories}>
-        <div className="container">
-          <div className={styles.categoryGrid}>
-            {[
-              { 
-                name: 'Laptops', 
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
-              },
-              { 
-                name: 'Headphones', 
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-              },
-              { 
-                name: 'Monitors', 
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-              },
-              { 
-                name: 'Accessories', 
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="2" width="12" height="20" rx="4" ry="4"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-              },
-              {
-                name: 'Pendrives',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect><path d="M9 2v4h6V2"></path></svg>
-              },
-              {
-                name: 'Memory Cards',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line></svg>
-              },
-              {
-                name: 'PC Parts',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
-              },
-              {
-                name: 'Smart Home',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-              },
-              {
-                name: 'Creator Tech',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-              },
-              {
-                name: 'External HDDs',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="19" x2="12" y2="21"></line></svg>
-              },
-              {
-                name: 'Streaming Devices',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
-              },
-              {
-                name: 'Google Products',
-                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-              }
-            ].map(cat => (
-              <Link key={cat.name} href={`/search?q=${cat.name.toLowerCase()}`} className={styles.categoryCard}>
-                <div className={styles.iconWrapper}>{cat.icon}</div>
-                <h3>{cat.name}</h3>
-                <span>View Deals &rarr;</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </RevealSection>
-
       {/* Extension Promo Section (MOVED ABOVE LIGHTNING DEALS) */}
       <RevealSection className={styles.extensionPromo}>
         <div className={`container ${styles.promoContainer}`}>
@@ -286,6 +222,70 @@ export default async function Home() {
           </Link>
         </div>
         <ProductSlider products={creatorTech} />
+      </RevealSection>
+
+      {/* Featured Categories */}
+      <RevealSection className={styles.categories}>
+        <div className="container">
+          <div className={styles.categoryGrid}>
+            {[
+              { 
+                name: 'Laptops', 
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+              },
+              { 
+                name: 'Headphones', 
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+              },
+              { 
+                name: 'Monitors', 
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              },
+              { 
+                name: 'Accessories', 
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="2" width="12" height="20" rx="4" ry="4"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              },
+              {
+                name: 'Pendrives',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect><path d="M9 2v4h6V2"></path></svg>
+              },
+              {
+                name: 'Memory Cards',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line></svg>
+              },
+              {
+                name: 'PC Parts',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              },
+              {
+                name: 'Smart Home',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              },
+              {
+                name: 'Creator Tech',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+              },
+              {
+                name: 'External HDDs',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="19" x2="12" y2="21"></line></svg>
+              },
+              {
+                name: 'Streaming Devices',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+              },
+              {
+                name: 'Google Products',
+                icon: <svg className="float-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+              }
+            ].map(cat => (
+              <Link key={cat.name} href={`/search?q=${cat.name.toLowerCase()}`} className={styles.categoryCard}>
+                <div className={styles.iconWrapper}>{cat.icon}</div>
+                <h3>{cat.name}</h3>
+                <span>View Deals &rarr;</span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </RevealSection>
 
       {/* FAQ Section */}

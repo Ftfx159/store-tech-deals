@@ -192,15 +192,15 @@
 
 .categoryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
 }
 
 .categoryCard {
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.03);
-  padding: 40px 24px;
-  border-radius: 32px;
+  padding: 24px 16px;
+  border-radius: 20px;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
@@ -233,15 +233,15 @@
 }
 
 .iconWrapper {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(135deg, #eff6ff, #dbeafe);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--accent-primary);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
   transition: transform 0.4s ease;
   position: relative;
@@ -253,15 +253,15 @@
 }
 
 .categoryCard h3 {
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
   color: var(--text-primary);
   position: relative;
   z-index: 2;
 }
 
 .categoryCard span {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--accent-primary);
   font-weight: 700;
   position: relative;
@@ -321,6 +321,12 @@
   align-items: flex-start;
 }
 
+@media (max-width: 1200px) {
+  .categoryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 992px) {
   .heroContainer, .promoContainer {
     flex-direction: column;
@@ -344,6 +350,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .categoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
   .heroTitle {
     font-size: 2.5rem;
@@ -351,6 +363,10 @@
   
   .productGrid {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+
+  .categoryGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
