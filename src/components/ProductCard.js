@@ -8,8 +8,13 @@ import { useStorage } from "@/context/StorageContext";
 import BuyButton from "./BuyButton";
 
 export default function ProductCard({ product }) {
+  const getAiFallbackUrl = (name) => {
+    const cleanName = name ? name.replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 80) : 'tech gadget';
+    return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanName + ' premium tech product photography studio lighting')}?width=800&height=800&nologo=true`;
+  };
+
   const [transform, setTransform] = useState("");
-  const [imgSrc, setImgSrc] = useState(product.imageUrl || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800');
+  const [imgSrc, setImgSrc] = useState(product.imageUrl || getAiFallbackUrl(product.name));
   const cardRef = useRef(null);
   const { toggleWishlist, isInWishlist } = useStorage();
 
@@ -75,7 +80,7 @@ export default function ProductCard({ product }) {
           loading="lazy"
           className={styles.image}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          onError={() => { setImgSrc('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800') }}
+          onError={() => { setImgSrc(getAiFallbackUrl(product.name)) }}
         />
       </Link>
       
