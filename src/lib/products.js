@@ -129,15 +129,20 @@ export async function getProductById(id) {
 }
 
 export async function getFlashDeals() {
-  const liveData = await fetchAndCacheProducts("computers electronics");
-  if (!liveData) return [];
+  const liveData = await fetchAndCacheProducts("clearance electronics sale");
+  if (!liveData || liveData.length === 0) return [];
 
-  // Filter out products with less than 30% discount
-  const flashDeals = liveData.filter(product => {
+  // Filter out products with less than 15% discount to be more realistic for premium tech
+  let flashDeals = liveData.filter(product => {
     if (!product.originalPrice || !product.discountedPrice) return false;
     const discountPercentage = Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100);
-    return discountPercentage >= 30; // 30% threshold
+    return discountPercentage >= 15; // Lowered to 15% threshold
   });
+
+  // If strict filtering resulted in no deals, just take all valid products
+  if (flashDeals.length === 0) {
+    flashDeals = liveData.filter(p => p.originalPrice && p.discountedPrice && p.originalPrice > p.discountedPrice);
+  }
 
   // Sort by highest discount
   flashDeals.sort((a, b) => {
