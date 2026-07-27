@@ -56,7 +56,7 @@ export default function ProductSlider({ products }) {
         ref={sliderRef} 
         onScroll={checkScroll}
       >
-        {products.map((product) => (
+        {Array.from(new Map(products.map(p => [p.id, p])).values()).map((product) => (
           <div key={product.id} className={styles.slideItem}>
             <ProductCard product={product} />
           </div>

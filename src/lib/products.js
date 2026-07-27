@@ -140,7 +140,12 @@ export async function getFlashDeals() {
   const generalDeals = await fetchAndCacheProducts("clearance electronics sale");
   const storageDeals = await fetchAndCacheProducts("pendrive memory card ssd sale deals");
   
-  const liveData = [...(generalDeals || []), ...(storageDeals || [])];
+  let liveData = [...(generalDeals || []), ...(storageDeals || [])];
+  
+  // Deduplicate merged deals
+  if (liveData.length > 0) {
+    liveData = Array.from(new Map(liveData.map(p => [p.id, p])).values());
+  }
   
   if (!liveData || liveData.length === 0) return [];
 
