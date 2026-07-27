@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import styles from "./page.module.css";
 import ProductSlider from "@/components/ProductSlider";
-import { getProductsByTag, getActiveSaleEvent, fetchAndCacheProducts } from "@/lib/products";
+import { getProductsByTag, getActiveSaleEvent, fetchAndCacheProducts, getFlashDeals } from "@/lib/products";
 import SecretDealVault from "@/components/SecretDealVault";
 import HeroSlider from "@/components/HeroSlider";
 import RevealSection from "@/components/RevealSection";
