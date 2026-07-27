@@ -319,7 +319,7 @@ export default async function Home() {
 
       {/* Secret Gamified Deal Vault */}
       <section className="container" style={{ padding: '40px 20px' }}>
-        <SecretDealVault />
+        <SecretDealVault deals={lightningDeals.slice(0, 5)} />
       </section>
 
     </div>
