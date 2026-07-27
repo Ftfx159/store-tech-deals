@@ -11,7 +11,7 @@ import Link from "next/link";
 export default async function Home() {
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   
-  const lightningDeals = await getProductsByTag("Lightning Deals");
+  const lightningDeals = await getFlashDeals();
   await delay(1100); // Wait 1.1s to avoid RapidAPI 1 Request/Second limit
   const trendingProducts = await getProductsByTag("Trending Products");
   await delay(1100);

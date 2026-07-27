@@ -137,7 +137,11 @@ export async function getProductById(id) {
 }
 
 export async function getFlashDeals() {
-  const liveData = await fetchAndCacheProducts("clearance electronics sale");
+  const generalDeals = await fetchAndCacheProducts("clearance electronics sale");
+  const storageDeals = await fetchAndCacheProducts("pendrive memory card ssd sale deals");
+  
+  const liveData = [...(generalDeals || []), ...(storageDeals || [])];
+  
   if (!liveData || liveData.length === 0) return [];
 
   // Filter out products with less than 15% discount to be more realistic for premium tech
@@ -159,7 +163,7 @@ export async function getFlashDeals() {
     return bDiscount - aDiscount;
   });
 
-  return flashDeals.slice(0, 8); // Return top 8 deals
+  return flashDeals.slice(0, 15); // Return top 15 deals
 }
 
 export async function searchProducts(query) {
