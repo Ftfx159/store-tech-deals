@@ -33,14 +33,22 @@ export async function POST(request) {
       // Sync only the specifically requested category
       allQueries = [syncCategory];
     } else {
-      // 1. Get all distinct search queries we have cached
-      const products = await prisma.product.findMany({
-        select: { searchQuery: true },
-        distinct: ['searchQuery'],
-        where: { searchQuery: { not: null } }
+      // 1. Get all queries, prioritizing stale data (Incremental Sync Queue)
+      const staleProducts = await prisma.product.findMany({
+        select: { searchQuery: true, lastUpdated: true },
+        where: { searchQuery: { not: null } },
+        orderBy: { lastUpdated: 'asc' }
       });
 
-      const queries = products.map(p => p.searchQuery).filter(Boolean);
+      const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
+      
+      // Find queries that haven't been synced in 12+ hours
+      const staleQueries = staleProducts
+        .filter(p => new Date(p.lastUpdated) < twelveHoursAgo)
+        .map(p => p.searchQuery)
+        .filter(Boolean);
+
+      let uniqueStaleQueries = [...new Set(staleQueries)];
       
       // Add "Discovery" queries to force searching for entirely new deals
       const discoveryQueries = [
@@ -58,11 +66,12 @@ export async function POST(request) {
         "google nest chromecast"
       ];
       
-      // Combine existing queries with discovery queries, ensuring uniqueness
-      allQueries = [...new Set([...queries, ...discoveryQueries])];
+      // Combine stale queries with discovery queries, ensuring uniqueness.
+      // HARD CAP at 15 queries per sync run to prevent RapidAPI rate limits (429 Too Many Requests)
+      allQueries = [...new Set([...uniqueStaleQueries, ...discoveryQueries])].slice(0, 15);
     }
 
-    console.log(`[Sync API] Found ${allQueries.length} queries to sync.`);
+    console.log(`[Sync API] Incremental Queue processing ${allQueries.length} queries.`);
 
     let totalUpdated = 0;
 

@@ -1,4 +1,5 @@
 import { searchAmazonProducts, getAmazonProductByASIN, getFallbackProducts } from './amazonApi';
+import { performFuzzySearch } from './searchEngine';
 import { prisma } from '@/lib/prisma';
 
 // Helper function to sync and cache live data
@@ -192,6 +193,28 @@ export async function searchProducts(query) {
   else if (query === 'under10000') { maxPrice = 10000; keyword = "smartphones"; }
   else if (query === 'premium') { keyword = "premium tech"; }
 
+  // Advanced Fuzzy Search (Typo-Tolerant Semantic Matching)
+  if (!maxPrice && query) {
+    try {
+      const allProducts = await prisma.product.findMany({ 
+        where: { inStock: true },
+        orderBy: { lastUpdated: 'desc' }
+      });
+      const parsedProducts = allProducts.map(parseProductFields);
+      
+      const fuzzyResults = performFuzzySearch(parsedProducts, query);
+      
+      // If we found solid local matches, return them instantly without hitting Amazon!
+      if (fuzzyResults.length >= 4) {
+        console.log(`[Fuzzy Search] Found ${fuzzyResults.length} instant semantic matches for "${query}"`);
+        return fuzzyResults.slice(0, 20);
+      }
+    } catch(e) {
+      console.error("[Fuzzy Search Error]", e);
+    }
+  }
+
+  // Fallback: Fetch Live from Amazon if no local semantic match was strong enough
   return await fetchAndCacheProducts(keyword, { maxPrice });
 }
 

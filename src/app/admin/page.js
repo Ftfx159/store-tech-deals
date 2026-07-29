@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import styles from './page.module.css';
 
 export default function AdminDashboard() {
@@ -10,6 +11,27 @@ export default function AdminDashboard() {
   const [logMessage, setLogMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [syncCategory, setSyncCategory] = useState('All');
+  const [stats, setStats] = useState(null);
+
+  const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#0ea5e9'];
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch('/api/admin/stats');
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
+      }
+    } catch(e) {
+      console.error("Failed to fetch stats", e);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchStats();
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -89,15 +111,59 @@ export default function AdminDashboard() {
         </div>
 
         <div className={styles.statusCard}>
-          <h3>Database Synchronization</h3>
+          <h3>Database Synchronization Queue</h3>
           <p>
-            Trigger a manual sync to fetch fresh deals from Amazon immediately. 
-            This process will update all current prices and specifically search for brand new tech gadgets and lightning deals to add to your catalog.
-          </p>
-          <p style={{marginTop: '10px', fontSize: '0.9rem', color: '#888'}}>
-            Note: This takes about 10-15 seconds to avoid API rate limits.
+            Trigger an incremental background sync. The system automatically prioritizes 
+            fetching fresh data for products that haven't been updated in over 12 hours to conserve API limits.
           </p>
         </div>
+
+        {stats && (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px', marginBottom: '20px' }}>
+            <div className={styles.statusCard} style={{ margin: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <h3>Catalog Health</h3>
+              <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--accent-primary)', marginTop: '10px' }}>
+                {stats.totalProducts} <span style={{fontSize: '1rem', color: '#888'}}>Total Items</span>
+              </div>
+              <div style={{ display: 'flex', gap: '20px', marginTop: '15px' }}>
+                <div>
+                  <div style={{ color: '#22c55e', fontWeight: 'bold' }}>{stats.inStock}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#888' }}>In Stock</div>
+                </div>
+                <div>
+                  <div style={{ color: '#f43f5e', fontWeight: 'bold' }}>{stats.outOfStock}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#888' }}>Out of Stock</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className={styles.statusCard} style={{ margin: 0, height: '250px' }}>
+              <h3 style={{ marginBottom: '10px' }}>AI Category Distribution</h3>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={stats.categories}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {stats.categories.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
+                    itemStyle={{ color: '#e2e8f0' }}
+                  />
+                  <Legend verticalAlign="bottom" height={36}/>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
 
         <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
           <select 

@@ -24,10 +24,49 @@ function decodeHtmlEntities(text) {
     .replace(/&gt;/g, '>');
 }
 
-// Helper to generate a contextual AI image if Amazon fails to provide one
 function getAiImageUrl(productName) {
   const cleanName = productName ? productName.replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 80) : 'tech gadget';
   return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanName + ' premium tech product photography studio lighting')}?width=800&height=800&nologo=true`;
+}
+
+// Exclude non-tech categories
+function isTechProduct(title, categoryName = '') {
+  const t = (title + ' ' + categoryName).toLowerCase();
+  
+  // Non-tech blacklisted keywords
+  const blacklist = [
+    'fashion', 'clothing', 'shoes', 'jewelry', 'beauty', 'makeup', 'grocery', 
+    'food', 'kitchen', 'furniture', 'home decor', 'toys', 'books', 'medicine',
+    'apparel', 'shirt', 'dress', 'perfume', 'snack', 'pillow', 'sofa', 'baby',
+    'shampoo', 'lotion', 'vitamin', 'supplement', 'diaper', 'pet'
+  ];
+  
+  if (blacklist.some(word => t.includes(word))) {
+    // Exceptions: Baby monitors, Smart kitchen scales, etc.
+    if (!t.includes('monitor') && !t.includes('smart') && !t.includes('camera') && !t.includes('scale')) {
+       return false;
+    }
+  }
+  return true;
+}
+
+// Heuristic-based Tech Categorization
+function autoCategorizeTech(title, fallback) {
+  const t = title.toLowerCase();
+  if (t.includes('laptop') || t.includes('macbook') || t.includes('chromebook')) return 'Laptops';
+  if (t.includes('monitor') || t.includes('display')) return 'Monitors';
+  if (t.includes('smartphone') || t.includes('iphone') || t.includes('galaxy s') || t.includes('pixel')) return 'Smartphones';
+  if (t.includes('headphone') || t.includes('earbud') || t.includes('speaker') || t.includes('airpod') || t.includes('soundbar')) return 'Audio';
+  if (t.includes('drive') || t.includes('ssd') || t.includes('hdd') || t.includes('memory card') || t.includes('pendrive') || t.includes('flash drive')) return 'Storage';
+  if (t.includes('processor') || t.includes('motherboard') || t.includes('ram ') || t.includes('gpu') || t.includes('rtx') || t.includes('graphics card')) return 'PC Parts';
+  if (t.includes('smart watch') || t.includes('apple watch') || t.includes('fitness tracker')) return 'Wearables';
+  if (t.includes('keyboard') || t.includes('mouse') || t.includes('webcam') || t.includes('docking station') || t.includes('cable')) return 'Accessories';
+  if (t.includes('alexa') || t.includes('echo') || t.includes('smart home') || t.includes('smart plug') || t.includes('smart bulb')) return 'Smart Home';
+  if (t.includes('playstation') || t.includes('xbox') || t.includes('nintendo') || t.includes('gaming console')) return 'Gaming';
+  if (t.includes('fire tv') || t.includes('chromecast') || t.includes('streaming stick') || t.includes('apple tv')) return 'Streaming Devices';
+  if (t.includes('printer') || t.includes('scanner') || t.includes('projector')) return 'Office Tech';
+  
+  return fallback && fallback !== 'Electronics' ? fallback : 'Electronics';
 }
 
 const fallbackProducts = [
@@ -196,7 +235,7 @@ export async function getAmazonProductByASIN(asin) {
 
 // Format the `search` endpoint results
 function formatAmazonResponse(items) {
-  return items.map(item => {
+  return items.filter(item => isTechProduct(item.product_title)).map(item => {
     const price = parsePrice(item.product_price);
     const originalPrice = parsePrice(item.product_original_price) || price;
     
@@ -204,7 +243,7 @@ function formatAmazonResponse(items) {
       id: item.asin,
       name: decodeHtmlEntities(item.product_title) || 'Unknown Product',
       brand: 'Amazon Partner', // RapidAPI search doesn't easily expose Brand
-      category: 'Electronics',
+      category: autoCategorizeTech(item.product_title, 'Electronics'),
       rating: parseFloat(item.product_star_rating) || 4.0,
       reviews: parseInt((item.product_num_ratings || '0').toString().replace(/,/g, ''), 10) || 0,
       originalPrice: originalPrice,
@@ -223,6 +262,8 @@ function formatAmazonResponse(items) {
 
 // Format the `product-details` endpoint result
 function formatDetailedResponse(item) {
+  if (!isTechProduct(item.product_title, item.category?.name)) return null;
+
   const price = parsePrice(item.product_price);
   const originalPrice = parsePrice(item.product_original_price) || price;
   
@@ -236,7 +277,7 @@ function formatDetailedResponse(item) {
     id: item.asin,
     name: decodeHtmlEntities(item.product_title) || 'Unknown Product',
     brand: item.brand || 'Amazon Partner',
-    category: item.category?.name || 'Electronics',
+    category: autoCategorizeTech(item.product_title, item.category?.name),
     rating: parseFloat(item.product_star_rating) || 4.0,
     reviews: item.product_num_ratings || 0, 
     originalPrice: originalPrice,
