@@ -2,6 +2,16 @@ import { searchAmazonProducts, getAmazonProductByASIN, getFallbackProducts } fro
 import { prisma } from '@/lib/prisma';
 
 // Helper function to sync and cache live data
+function parseProductFields(product) {
+  if (typeof product.features === 'string') {
+    try { product.features = JSON.parse(product.features); } catch(e) { product.features = []; }
+  }
+  if (typeof product.tags === 'string') {
+    try { product.tags = JSON.parse(product.tags); } catch(e) { product.tags = []; }
+  }
+  return product;
+}
+
 export async function fetchAndCacheProducts(query, options = {}) {
   const normalizedQuery = query.toLowerCase().trim();
 
@@ -24,7 +34,7 @@ export async function fetchAndCacheProducts(query, options = {}) {
 
     if (hasValidCache) {
       console.log(`[Cache Hit] Serving "${query}" from local database.`);
-      return cachedProducts;
+      return cachedProducts.map(parseProductFields);
     }
 
     // 2. Fetch Live from Amazon API
@@ -121,7 +131,7 @@ export async function getProductById(id) {
     // Try DB first
     const cachedProduct = await prisma.product.findUnique({ where: { id } });
     if (cachedProduct && (new Date() - new Date(cachedProduct.lastUpdated)) < 24 * 60 * 60 * 1000) {
-      return cachedProduct;
+      return parseProductFields(cachedProduct);
     }
   } catch(e) {}
   
