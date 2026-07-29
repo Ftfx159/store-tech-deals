@@ -4,9 +4,10 @@ import { searchAmazonProducts } from '@/lib/amazonApi';
 
 export async function POST(request) {
   try {
-    // Basic security check (e.g., auth token)
     const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.SYNC_SECRET || 'dev-secret'}`) {
+    const validSecret = process.env.SYNC_SECRET || (process.env.NODE_ENV !== 'production' ? 'dev-secret' : null);
+    
+    if (!validSecret || authHeader !== `Bearer ${validSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -115,7 +116,7 @@ export async function POST(request) {
 
     return NextResponse.json({ 
       success: true, 
-      message: `Sync complete. Updated ${totalUpdated} products across ${queries.length} categories.` 
+      message: `Sync complete. Updated ${totalUpdated} products across ${allQueries.length} categories.` 
     });
 
   } catch (error) {

@@ -91,7 +91,8 @@ export async function fetchAndCacheProducts(query, options = {}) {
     return savedProducts;
   } catch (err) {
     console.error("Error in fetchAndCacheProducts:", err);
-    return await searchAmazonProducts(query, 'Electronics', options); // Fallback directly to API
+    const fallbackFromApi = await searchAmazonProducts(query, 'Electronics', options);
+    return fallbackFromApi || getFallbackProducts(query);
   }
 }
 

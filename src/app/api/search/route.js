@@ -38,6 +38,14 @@ export async function GET(request) {
     console.log(`[Search API] Fetching live data for "${query}"`);
     const liveProducts = await searchAmazonProducts(query);
 
+    if (!liveProducts) {
+      if (cachedProducts.length > 0) {
+        console.warn(`[Search API] Live fetch failed, serving stale cache for "${query}"`);
+        return NextResponse.json({ data: cachedProducts, source: 'stale_cache' });
+      }
+      return NextResponse.json({ error: 'Rate limit hit or upstream API failure' }, { status: 502 });
+    }
+
     // 3. Save / Update in Database
     const savedProducts = [];
     for (const p of liveProducts) {
