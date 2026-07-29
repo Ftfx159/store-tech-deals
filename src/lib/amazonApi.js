@@ -1,3 +1,5 @@
+import { scrapeAmazonSearch, scrapeAmazonProductDetails } from './amazonScraper';
+
 const RAPIDAPI_HOST = process.env.RAPIDAPI_HOST || 'real-time-amazon-data.p.rapidapi.com';
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 
@@ -151,84 +153,40 @@ export function getFallbackProducts(keyword = '') {
 }
 
 export async function searchAmazonProducts(keyword, category = 'Electronics', options = {}) {
-  if (!hasCredentials) {
-    console.error("CRITICAL: RapidAPI Key is missing. Returning null to trigger fallback in products.js.");
-    return null;
-  }
-
   try {
-    const url = new URL(`https://${RAPIDAPI_HOST}/search`);
-    url.searchParams.append('query', keyword);
-    url.searchParams.append('page', '1');
-    url.searchParams.append('country', 'IN');
+    // Attempt to scrape Amazon for free
+    console.log(`[Scraper] Fetching live data for "${keyword}"...`);
+    const scrapedData = await scrapeAmazonSearch(keyword);
     
-    // Sort logic
-    if (options.maxPrice) {
-       url.searchParams.append('sort_by', 'PRICE_LOW_TO_HIGH');
-    } else {
-       url.searchParams.append('sort_by', 'RELEVANCE');
-    }
-
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-host': RAPIDAPI_HOST,
-        'x-rapidapi-key': RAPIDAPI_KEY
-      },
-      next: { revalidate: 3600 }
-    });
-
-    if (!response.ok) {
-      console.warn(`RapidAPI warning: ${response.status} - Likely 429 Too Many Requests (Rate limit hit).`);
-      return null;
-    }
-
-    const json = await response.json();
-    
-    if (json.data && Array.isArray(json.data.products)) {
-      let products = formatAmazonResponse(json.data.products);
+    if (scrapedData && Array.isArray(scrapedData)) {
+      let products = formatAmazonResponse(scrapedData);
       if (options.maxPrice) {
         products = products.filter(p => p.discountedPrice <= options.maxPrice);
       }
       return products.length > 0 ? products.slice(0, 15) : null;
     }
     
+    console.warn(`[Scraper] Failed or blocked for "${keyword}". Triggering static fallbacks.`);
     return null;
   } catch (error) {
-    console.error("RapidAPI Search Error:", error);
+    console.error("Amazon Scraper Search Error:", error);
     return null;
   }
 }
 
 export async function getAmazonProductByASIN(asin) {
-  if (!hasCredentials) return fallbackProducts.find(p => p.id === asin) || fallbackProducts[0];
-
   try {
-    const url = `https://${RAPIDAPI_HOST}/product-details?asin=${asin}&country=IN`;
+    console.log(`[Scraper] Fetching product details for ASIN ${asin}...`);
+    const scrapedDetails = await scrapeAmazonProductDetails(asin);
     
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-host': RAPIDAPI_HOST,
-        'x-rapidapi-key': RAPIDAPI_KEY
-      },
-      next: { revalidate: 3600 }
-    });
-
-    if (!response.ok) {
-      console.warn(`RapidAPI details warning: ${response.status} - Likely 429 Too Many Requests.`);
-      return fallbackProducts.find(p => p.id === asin) || fallbackProducts[0];
-    }
-
-    const json = await response.json();
-    if (json.data) {
-      // The product-details endpoint has a slightly different format than search
-      return formatDetailedResponse(json.data);
+    if (scrapedDetails) {
+      return formatDetailedResponse(scrapedDetails);
     }
     
+    console.warn(`[Scraper] Blocked or failed for ASIN ${asin}. Returning fallback.`);
     return fallbackProducts.find(p => p.id === asin) || fallbackProducts[0];
   } catch (error) {
-    console.error("RapidAPI Details Error:", error);
+    console.error("Scraper Details Error:", error);
     return fallbackProducts.find(p => p.id === asin) || fallbackProducts[0];
   }
 }
