@@ -21,9 +21,28 @@ export async function generateMetadata({ params }) {
   const product = await getProductById(id);
   if (!product) return { title: "Product Not Found" };
   
+  const title = `${product.name.slice(0, 50)}... | FTFX Tech Deals`;
+  const description = `Buy ${product.name} at a discount. Save ₹${product.originalPrice - product.discountedPrice}. Compare features and read reviews.`;
+
   return {
-    title: `${product.name} | FTFX Tech Deals`,
-    description: `Buy ${product.name} at a discount. Save ₹${product.originalPrice - product.discountedPrice}.`,
+    title,
+    description,
+    alternates: {
+      canonical: `https://ftfxtechdeals.com/product/${id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://ftfxtechdeals.com/product/${id}`,
+      images: [{ url: product.imageUrl }],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [product.imageUrl],
+    },
   };
 }
 
@@ -49,8 +68,39 @@ export default async function ProductPage({ params }) {
     return `₹${numStr}`;
   };
 
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": product.imageUrl,
+    "description": product.name,
+    "brand": {
+      "@type": "Brand",
+      "name": product.brand || "Generic"
+    },
+    "sku": product.id,
+    "offers": {
+      "@type": "Offer",
+      "url": `https://ftfxtechdeals.com/product/${product.id}`,
+      "priceCurrency": "INR",
+      "price": product.discountedPrice,
+      "priceValidUntil": new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+    },
+    "aggregateRating": product.reviews > 0 ? {
+      "@type": "AggregateRating",
+      "ratingValue": product.rating || 4.5,
+      "reviewCount": product.reviews
+    } : undefined
+  };
+
   return (
     <div className={`container ${styles.productPage}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className={styles.breadcrumbs} style={{ display: 'flex', alignItems: 'center' }}>
         <BackButton />
         <span style={{ margin: '0 8px', color: '#cbd5e1' }}>|</span>

@@ -1,9 +1,28 @@
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
+import { prisma } from '@/lib/prisma';
 
-export default function sitemap() {
-  const baseUrl = "https://ftfxtechdeals.com"; // Replace with actual domain
+export default async function sitemap() {
+  const baseUrl = "https://ftfxtechdeals.com";
 
-  // We would normally fetch products dynamically to generate URLs here
+  let products = [];
+  try {
+    products = await prisma.product.findMany({
+      select: {
+        id: true,
+        lastUpdated: true,
+      }
+    });
+  } catch(e) {
+    console.error("Sitemap generation failed to fetch products:", e);
+  }
+
+  const productRoutes = products.map((product) => ({
+    url: `${baseUrl}/product/${product.id}`,
+    lastModified: product.lastUpdated,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  }));
+
   const staticRoutes = [
     {
       url: baseUrl,
@@ -16,14 +35,8 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'hourly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/wishlist`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.5,
-    },
+    }
   ];
 
-  return staticRoutes;
+  return [...staticRoutes, ...productRoutes];
 }
