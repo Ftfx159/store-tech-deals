@@ -17,7 +17,7 @@ export async function fetchAndCacheProducts(query, options = {}) {
   const normalizedQuery = query.toLowerCase().trim();
 
   try {
-    // 1. Try to find in Database (Intelligent Caching)
+    // 1. Instantly Serve from Database
     const cachedProducts = await prisma.product.findMany({
       where: {
         searchQuery: normalizedQuery,
@@ -29,81 +29,19 @@ export async function fetchAndCacheProducts(query, options = {}) {
       take: 20
     });
 
-    // Check if we have recent enough results (within 24 hours)
-    const hasValidCache = cachedProducts.length > 0 && 
-      (new Date() - new Date(cachedProducts[0].lastUpdated)) < 24 * 60 * 60 * 1000;
-
-    if (hasValidCache) {
-      console.log(`[Cache Hit] Serving "${query}" from local database.`);
+    if (cachedProducts && cachedProducts.length > 0) {
+      if (options.maxPrice) {
+        return cachedProducts.map(parseProductFields).filter(p => p.discountedPrice <= options.maxPrice);
+      }
       return cachedProducts.map(parseProductFields);
     }
 
-    // 2. Fetch Live from Amazon API
-    console.log(`[Cache Miss] Fetching live data from Amazon for "${query}"`);
-    const liveProducts = await searchAmazonProducts(query, 'Electronics', options);
-
-    if (!liveProducts || liveProducts.length === 0) {
-      if (cachedProducts.length === 0) {
-        // Fallback to static data if both DB and API fail, but DO NOT CACHE it
-        return getFallbackProducts(query);
-      }
-      return cachedProducts;
-    }
-
-    // 3. Save / Update in Database asynchronously
-    const savedProducts = [];
-    for (const p of liveProducts) {
-      try {
-        const upsertedProduct = await prisma.product.upsert({
-          where: { id: p.id },
-          update: {
-            name: p.name,
-            brand: p.brand || null,
-            category: p.category || null,
-            rating: p.rating || 0,
-            reviews: p.reviews || 0,
-            originalPrice: p.originalPrice || p.discountedPrice,
-            discountedPrice: p.discountedPrice,
-            primeEligible: p.primeEligible || false,
-            inStock: p.inStock !== false,
-            imageUrl: p.imageUrl,
-            amazonUrl: p.amazonUrl,
-            couponCode: p.couponCode || null,
-            searchQuery: normalizedQuery,
-            lastUpdated: new Date()
-          },
-          create: {
-            id: p.id,
-            name: p.name,
-            brand: p.brand || null,
-            category: p.category || null,
-            rating: p.rating || 0,
-            reviews: p.reviews || 0,
-            originalPrice: p.originalPrice || p.discountedPrice,
-            discountedPrice: p.discountedPrice,
-            primeEligible: p.primeEligible || false,
-            inStock: p.inStock !== false,
-            features: p.features ? JSON.stringify(p.features) : null,
-            amazonUrl: p.amazonUrl,
-            imageUrl: p.imageUrl,
-            tags: p.tags ? JSON.stringify(p.tags) : null,
-            couponCode: p.couponCode || null,
-            searchQuery: normalizedQuery
-          }
-        });
-        savedProducts.push(upsertedProduct);
-      } catch (dbErr) {
-        console.error(`Failed to save product ${p.id} to DB:`, dbErr);
-        // still return the live product even if DB fails
-        savedProducts.push(p); 
-      }
-    }
-
-    return savedProducts;
+    // 2. Cache Miss: DO NOT Scrape On-Demand! 
+    // Fallback instantly to static data so the UI doesn't hang. The background Cron job will populate the real data.
+    return getFallbackProducts(query);
   } catch (err) {
     console.error("Error in fetchAndCacheProducts:", err);
-    const fallbackFromApi = await searchAmazonProducts(query, 'Electronics', options);
-    return fallbackFromApi || getFallbackProducts(query);
+    return getFallbackProducts(query);
   }
 }
 
@@ -129,23 +67,17 @@ export async function getProductsByTag(tag) {
 
 export async function getProductById(id) {
   try {
-    // Try DB first
+    // Instantly Serve from DB
     const cachedProduct = await prisma.product.findUnique({ where: { id } });
-    if (cachedProduct && (new Date() - new Date(cachedProduct.lastUpdated)) < 24 * 60 * 60 * 1000) {
+    if (cachedProduct) {
       return parseProductFields(cachedProduct);
     }
-  } catch(e) {}
-  
-  const product = await getAmazonProductByASIN(id);
-  if (product && product.id) {
-    // Fire and forget save
-    prisma.product.upsert({
-      where: { id: product.id },
-      update: { discountedPrice: product.discountedPrice, inStock: product.inStock, lastUpdated: new Date() },
-      create: { ...product, originalPrice: product.originalPrice || product.discountedPrice, searchQuery: 'ASIN_LOOKUP' }
-    }).catch(() => {});
+  } catch(e) {
+    console.error(e);
   }
-  return product;
+  
+  // Cache miss - fallback without blocking scraping
+  return getFallbackProducts(id)[0];
 }
 
 export async function getFlashDeals() {

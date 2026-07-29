@@ -9,34 +9,37 @@ import LiveCouponScanner from "@/components/LiveCouponScanner";
 import Link from "next/link";
 
 export default async function Home() {
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   
-  const lightningDeals = await getFlashDeals();
-  await delay(1100); // Wait 1.1s to avoid RapidAPI 1 Request/Second limit
-  const trendingProducts = await getProductsByTag("Trending Products");
-  await delay(1100);
-  const under1000 = await getProductsByTag("Under ₹1000");
-  await delay(1100);
-  const smartHome = await getProductsByTag("Smart Home");
-  await delay(1100);
-  const pcParts = await getProductsByTag("PC Components");
-  await delay(1100);
-  const creatorTech = await getProductsByTag("Creator Tech");
-  await delay(1100);
-  const pendrives = await getProductsByTag("Pendrives & Storage");
-  await delay(1100);
-  const memoryCards = await getProductsByTag("Memory Cards");
-  await delay(1100);
-  const hdds = await getProductsByTag("External HDDs");
-  await delay(1100);
-  const streaming = await getProductsByTag("Streaming Devices");
-  await delay(1100);
-  const google = await getProductsByTag("Google Products");
+  // Fetch everything in parallel instantly from the local database
+  const [
+    lightningDeals,
+    trendingProducts,
+    under1000,
+    smartHome,
+    pcParts,
+    creatorTech,
+    pendrives,
+    memoryCards,
+    hdds,
+    streaming,
+    google
+  ] = await Promise.all([
+    getFlashDeals(),
+    getProductsByTag("Trending Products"),
+    getProductsByTag("Under ₹1000"),
+    getProductsByTag("Smart Home"),
+    getProductsByTag("PC Components"),
+    getProductsByTag("Creator Tech"),
+    getProductsByTag("Pendrives & Storage"),
+    getProductsByTag("Memory Cards"),
+    getProductsByTag("External HDDs"),
+    getProductsByTag("Streaming Devices"),
+    getProductsByTag("Google Products")
+  ]);
   
   // Get active seasonal sale
   const activeSale = getActiveSaleEvent();
   const saleProducts = await fetchAndCacheProducts(activeSale.query);
-  await delay(1100);
   
   // Merge categories for the grouped sliders
   const mergedPcStorage = [...pcParts.slice(0,6), ...pendrives.slice(0,4), ...memoryCards.slice(0,4), ...hdds.slice(0,6)];
