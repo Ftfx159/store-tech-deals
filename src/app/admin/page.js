@@ -31,7 +31,7 @@ export default function AdminDashboard() {
       const res = await fetch('/api/sync', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer dev-secret',
+          'Authorization': `Bearer ${password}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ category: syncCategory })

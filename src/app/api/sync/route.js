@@ -5,9 +5,13 @@ import { searchAmazonProducts } from '@/lib/amazonApi';
 export async function POST(request) {
   try {
     const authHeader = request.headers.get('authorization');
-    const validSecret = process.env.SYNC_SECRET || (process.env.NODE_ENV !== 'production' ? 'dev-secret' : null);
+    const providedSecret = authHeader ? authHeader.replace('Bearer ', '') : null;
     
-    if (!validSecret || authHeader !== `Bearer ${validSecret}`) {
+    const syncSecret = process.env.SYNC_SECRET;
+    const adminPassword = process.env.ADMIN_PASSWORD || 'Tanish&2018';
+    const devFallback = process.env.NODE_ENV !== 'production' ? 'dev-secret' : null;
+    
+    if (!providedSecret || (providedSecret !== syncSecret && providedSecret !== adminPassword && providedSecret !== devFallback)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
