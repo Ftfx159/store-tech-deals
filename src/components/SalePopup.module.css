@@ -1,177 +1,144 @@
 .overlay {
   position: fixed;
-  top: 20px;
+  top: 16px;
   left: 0;
   right: 0;
   z-index: 9999;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  pointer-events: none; /* Let clicks pass through empty space */
-}
-
-.popupContainer {
-  pointer-events: auto;
-  width: 340px;
-  background-color: var(--surface);
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  position: relative;
-  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  border: 1px solid rgba(255, 115, 0, 0.3);
-}
-
-@keyframes slideDown {
-  0% { opacity: 0; transform: translateY(-40px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.closeButton {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border: none;
-  color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  line-height: 1;
-  cursor: pointer;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.closeButton:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-.popupHeader {
-  background: linear-gradient(135deg, #ff7300 0%, #ff4500 100%);
-  padding: 30px 20px 20px;
-  text-align: center;
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Background pattern */
-.popupHeader::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 90%, rgba(255,255,255,0.1) 0%, transparent 40%);
   pointer-events: none;
 }
 
-.badge {
-  background: white;
-  color: #ff4500;
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  display: inline-block;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 2;
-}
-
-.popupHeader h2 {
-  font-size: 1.8rem;
-  line-height: 1.1;
-  font-weight: 800;
-  margin: 0 0 8px 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  position: relative;
-  z-index: 2;
-}
-
-.subtitle {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  margin: 0;
-  font-weight: 500;
-  position: relative;
-  z-index: 2;
-}
-
-.popupBody {
-  padding: 20px;
-  background: var(--surface-light);
-}
-
-.benefits {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px 0;
-}
-
-.benefits li {
+.notificationCard {
+  pointer-events: auto;
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 115, 0, 0.2);
+  position: relative;
+  animation: slideDownNotification 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  max-width: 90%;
+  gap: 12px;
 }
 
-.benefits li:last-child {
-  margin-bottom: 0;
+@keyframes slideDownNotification {
+  0% { opacity: 0; transform: translateY(-40px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.icon {
-  background: rgba(255, 115, 0, 0.1);
-  width: 28px;
-  height: 28px;
+.iconContainer {
+  background: linear-gradient(135deg, #ff7300, #ff4500);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  margin-right: 12px;
-  font-size: 0.85rem;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(255, 115, 0, 0.3);
+}
+
+.pulseIcon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 12px;
+}
+
+.badge {
+  color: #ff4500;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.textContent h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.2;
+}
+
+.textContent p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.actionContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 1px solid rgba(0,0,0,0.1);
+  padding-left: 12px;
 }
 
 .ctaButton {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #ffdf00 0%, #ffb300 100%);
+  background: #ffb300;
   color: #000;
-  text-align: center;
+  font-size: 0.8rem;
   font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
   text-decoration: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 223, 0, 0.2);
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .ctaButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 223, 0, 0.3);
+  background: #ffdf00;
+  transform: translateY(-1px);
 }
 
-@media (max-width: 480px) {
-  .overlay {
-    top: 10px;
-    padding: 0 16px;
+.closeButton {
+  background: transparent;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.closeButton:hover {
+  color: #ff4500;
+}
+
+@media (max-width: 600px) {
+  .notificationCard {
+    border-radius: 16px;
+    padding: 12px;
   }
-  .popupContainer {
-    width: 100%;
+  .actionContainer {
+    flex-direction: column;
+    border-left: none;
+    padding-left: 0;
+  }
+  .textContent p {
+    display: none;
   }
 }

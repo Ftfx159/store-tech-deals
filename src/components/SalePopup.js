@@ -26,37 +26,27 @@ export default function SalePopup() {
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.popupContainer}>
-        <button onClick={handleDismiss} className={styles.closeButton} aria-label="Close">
-          &times;
-        </button>
+      <div className={styles.notificationCard}>
         
-        <div className={styles.popupHeader}>
-          <div className={styles.badge}>Starts 7th Aug</div>
-          <h2>Great <br/>Freedom Sale</h2>
-          <p className={styles.subtitle}>Big savings for everyone on Premium Tech!</p>
+        <div className={styles.iconContainer}>
+          <span className={styles.pulseIcon}>🔥</span>
         </div>
 
-        <div className={styles.popupBody}>
-          <ul className={styles.benefits}>
-            <li>
-              <span className={styles.icon}>🔄</span>
-              <span>Massive Exchange Offers</span>
-            </li>
-            <li>
-              <span className={styles.icon}>💳</span>
-              <span>No Cost EMI available</span>
-            </li>
-            <li>
-              <span className={styles.icon}>🏦</span>
-              <span>10% Instant Discount on HDFC</span>
-            </li>
-          </ul>
-          
-          <Link href="/search?q=great+freedom+sale" onClick={handleDismiss} className={styles.ctaButton}>
-            Sneak Peek Deals Now
-          </Link>
+        <div className={styles.textContent}>
+          <div className={styles.badge}>Starts 7th Aug</div>
+          <h4>Great Freedom Sale</h4>
+          <p>Massive Exchange Offers & 10% HDFC Discount!</p>
         </div>
+
+        <div className={styles.actionContainer}>
+          <Link href="/search?q=great+freedom+sale" onClick={handleDismiss} className={styles.ctaButton}>
+            Sneak Peek
+          </Link>
+          <button onClick={handleDismiss} className={styles.closeButton} aria-label="Close">
+            &times;
+          </button>
+        </div>
+
       </div>
     </div>
   );
