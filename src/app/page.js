@@ -6,6 +6,7 @@ import SecretDealVault from "@/components/SecretDealVault";
 import HeroSlider from "@/components/HeroSlider";
 import RevealSection from "@/components/RevealSection";
 import LiveCouponScanner from "@/components/LiveCouponScanner";
+import SalePopup from "@/components/SalePopup";
 import Link from "next/link";
 
 export default async function Home() {
@@ -63,6 +64,7 @@ export default async function Home() {
   
   return (
     <div className={styles.main}>
+      <SalePopup />
 
       {/* Recommended for You */}
       <RevealSection className={styles.hero}>
