@@ -1,27 +1,21 @@
-import { prisma } from '@/lib/prisma';
+import { getFlashDeals } from '@/lib/products';
 import DealOfTheHour from './DealOfTheHour';
 
 export default async function GlobalDealBanner() {
   try {
-    const products = await prisma.product.findMany({
-      where: { 
-        originalPrice: { gt: 0 },
-        inStock: true
-      },
-      take: 100
-    });
+    const deals = await getFlashDeals();
     
-    if (!products || products.length === 0) return null;
+    if (!deals || deals.length === 0) return null;
     
-    const discounted = products.filter(p => p.originalPrice > p.discountedPrice);
-    
-    discounted.sort((a, b) => {
+    // Sort deals by highest discount percentage just to be sure
+    deals.sort((a, b) => {
       const aPct = (a.originalPrice - a.discountedPrice) / a.originalPrice;
       const bPct = (b.originalPrice - b.discountedPrice) / b.originalPrice;
       return bPct - aPct;
     });
     
-    const topDeals = discounted.slice(0, 3);
+    // Take the top 3 highest discounts
+    const topDeals = deals.slice(0, 3);
     
     if (topDeals.length === 0) return null;
     
