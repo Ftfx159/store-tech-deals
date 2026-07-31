@@ -18,6 +18,21 @@ export default function SetupBuilderPage() {
     { id: 'streaming', name: 'Streaming & Creator', icon: '🎥' },
   ];
 
+  const handleReset = () => {
+    setResult(null);
+    setBudget(80000);
+  };
+
+  const handleBuyEntireSetup = () => {
+    if (!result) return;
+    const allItems = [...result.core, ...result.accessories];
+    let cartUrl = `https://www.amazon.in/gp/aws/cart/add.html?AssociateTag=ftfx-21`;
+    allItems.forEach((item, index) => {
+      cartUrl += `&ASIN.${index + 1}=${item.id}&Quantity.${index + 1}=1`;
+    });
+    window.open(cartUrl, '_blank', 'noopener,noreferrer');
+  };
+
   const handleBuild = async () => {
     setLoading(true);
     setError(null);
@@ -148,6 +163,9 @@ export default function SetupBuilderPage() {
                       <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
                       <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
                     </div>
+                    <a href={p.amazonUrl} target="_blank" rel="noopener noreferrer" className={styles.rowBuyBtn}>
+                      Buy Now &rarr;
+                    </a>
                   </div>
                 ))}
               </div>
@@ -169,6 +187,9 @@ export default function SetupBuilderPage() {
                           <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
                           <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
                         </div>
+                        <a href={p.amazonUrl} target="_blank" rel="noopener noreferrer" className={styles.rowBuyBtn}>
+                          Buy Now &rarr;
+                        </a>
                       </div>
                     ))}
                   </div>
@@ -186,14 +207,21 @@ export default function SetupBuilderPage() {
                 </div>
               </div>
 
-              <a 
-                href="https://www.amazon.in/cart/add?tag=ftfxtechsolut-21" 
-                target="_blank" 
-                rel="noreferrer" 
-                className={styles.buyAllBtn}
-              >
-                Add All To Amazon Cart
-              </a>
+              <div className={styles.buyAllSection}>
+                <div className={styles.buyAllContent}>
+                  <div className={styles.buyAllText}>
+                    <h3>Ready to checkout?</h3>
+                    <p>Instantly add all {result.core.length + result.accessories.length} components to your Amazon Cart.</p>
+                  </div>
+                  <button onClick={handleBuyEntireSetup} className={styles.buyAllBtn}>
+                    🛒 Buy Entire Setup on Amazon
+                  </button>
+                </div>
+              </div>
+
+              <button className={styles.resetBtn} onClick={handleReset} style={{marginTop: '1.5rem'}}>
+                &larr; Build Another Setup
+              </button>
             </div>
           )}
         </div>

@@ -173,15 +173,22 @@ export async function POST(req) {
       if (product) accBundle.push(product);
     }
 
-    const formatProduct = (p) => ({
-      id: p.id,
-      name: p.name,
-      category: p.category || 'Tech',
-      discountedPrice: p.discountedPrice,
-      originalPrice: p.originalPrice,
-      imageUrl: p.imageUrl,
-      amazonUrl: p.amazonUrl || `https://www.amazon.in/dp/${p.id}`
-    });
+    const formatProduct = (p) => {
+      let affiliateUrl = p.amazonUrl || `https://www.amazon.in/dp/${p.id}`;
+      if (!affiliateUrl.includes('tag=')) {
+        affiliateUrl += (affiliateUrl.includes('?') ? '&' : '?') + 'tag=ftfx-21';
+      }
+
+      return {
+        id: p.id,
+        name: p.name,
+        category: p.category || 'Tech',
+        discountedPrice: p.discountedPrice,
+        originalPrice: p.originalPrice,
+        imageUrl: p.imageUrl,
+        amazonUrl: affiliateUrl
+      };
+    };
 
     const formattedCore = coreBundle.map(formatProduct);
     const formattedAcc = accBundle.map(formatProduct);
