@@ -10,6 +10,7 @@ export default function SetupBuilderPage() {
   const [goal, setGoal] = useState('gaming');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
   const goals = [
     { id: 'gaming', name: 'Gaming Setup', icon: '🎮' },
@@ -19,45 +20,35 @@ export default function SetupBuilderPage() {
 
   const handleBuild = async () => {
     setLoading(true);
-    // In a real implementation, this would fetch from /api/build-setup
-    // For now, we simulate an API call and return mock data from the database
-    setTimeout(() => {
+    setError(null);
+    setResult(null);
+
+    try {
+      const res = await fetch('/api/build-setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ budget, goal })
+      });
+      
+      const data = await res.json();
+      
+      if (!data.success) {
+        setError(data.error || "Failed to build setup. Try a different budget.");
+        setLoading(false);
+        return;
+      }
+      
       setResult({
         goal: goals.find(g => g.id === goal).name,
-        totalPrice: budget * 0.9,
-        originalPrice: budget * 1.2,
-        products: [
-          {
-            id: 'B0C4Z4FB6C', // From fallback db
-            name: 'NVIDIA GeForce RTX 4060 Ti 8GB Graphic Card',
-            category: 'PC Parts',
-            discountedPrice: 38990,
-            originalPrice: 45000,
-            imageUrl: 'https://m.media-amazon.com/images/I/612hBw-i61L._SX679_.jpg',
-            amazonUrl: 'https://www.amazon.in/dp/B0C4Z4FB6C'
-          },
-          {
-            id: 'B0B9G5D9H3',
-            name: 'Intel Core i5-13600K Desktop Processor',
-            category: 'PC Parts',
-            discountedPrice: 28499,
-            originalPrice: 35000,
-            imageUrl: 'https://m.media-amazon.com/images/I/61Nl5c9vXJL._SX679_.jpg',
-            amazonUrl: 'https://www.amazon.in/dp/B0B9G5D9H3'
-          },
-          {
-            id: 'B006JH8T3S',
-            name: 'Logitech C920 HD Pro Webcam',
-            category: 'Creator Tech',
-            discountedPrice: 6495,
-            originalPrice: 8995,
-            imageUrl: 'https://m.media-amazon.com/images/I/71iNwnHT3IL._SX679_.jpg',
-            amazonUrl: 'https://www.amazon.in/dp/B006JH8T3S'
-          }
-        ]
+        totalPrice: data.data.totalPrice,
+        originalPrice: data.data.originalPrice,
+        products: data.data.products
       });
-      setLoading(false);
-    }, 1500);
+    } catch (err) {
+      setError("Network error occurred while building setup.");
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -110,12 +101,17 @@ export default function SetupBuilderPage() {
           </button>
         </div>
 
-        {/* Results Area */}
         <div className={styles.resultCard}>
-          {!result && !loading && (
+          {!result && !loading && !error && (
             <div className={styles.emptyState}>
               <div className={styles.robotIcon}>🤖</div>
               <p>Ready to build? Set your budget and click Generate.</p>
+            </div>
+          )}
+
+          {error && !loading && (
+            <div className={styles.errorState}>
+              <p>⚠️ {error}</p>
             </div>
           )}
 

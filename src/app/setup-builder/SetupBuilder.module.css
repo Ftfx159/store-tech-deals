@@ -1,6 +1,6 @@
 .builderContainer {
   padding: 60px 20px 100px;
-  background-color: #000000; /* Pure black background for luxury feel */
+  background-color: #fafafa;
   min-height: 100vh;
 }
 
@@ -11,29 +11,29 @@
 
 .aiBadge {
   display: inline-block;
-  background: linear-gradient(135deg, #27272a 0%, #18181b 100%);
-  border: 1px solid #3f3f46;
-  color: #d4d4d8;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
   padding: 6px 16px;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
   margin-bottom: 20px;
   letter-spacing: 2px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
 }
 
 .title {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 16px;
-  color: #fafafa;
+  color: #111827;
   letter-spacing: -1px;
 }
 
 .subtitle {
-  color: #a1a1aa;
+  color: #6b7280;
   font-size: 1.15rem;
   font-weight: 400;
   max-width: 650px;
@@ -56,16 +56,17 @@
 }
 
 .inputCard, .resultCard {
-  background: #09090b;
-  border: 1px solid #27272a;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid #f3f4f6;
+  border-radius: 24px;
   padding: 40px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.04);
 }
 
 .inputCard h3 {
-  color: #fafafa;
-  font-weight: 500;
+  color: #111827;
+  font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 16px;
 }
@@ -78,30 +79,32 @@
 }
 
 .goalBtn {
-  background: #18181b;
-  border: 1px solid #27272a;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 16px 20px;
-  color: #a1a1aa;
+  color: #4b5563;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 16px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .goalBtn:hover {
-  background: #27272a;
-  color: #fafafa;
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
 }
 
 .goalBtn.active {
-  background: rgba(56, 189, 248, 0.05);
-  border-color: #38bdf8;
-  color: #38bdf8;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+  background: #ffffff;
+  border-color: #111827;
+  color: #111827;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.1);
 }
 
 .goalIcon {
@@ -111,7 +114,7 @@
 .budgetDisplay {
   font-size: 3.5rem;
   font-weight: 300;
-  color: #fafafa;
+  color: #111827;
   text-align: center;
   margin: 32px 0 24px;
   letter-spacing: -2px;
@@ -121,9 +124,9 @@
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  accent-color: #fafafa;
+  accent-color: #111827;
   height: 4px;
-  background: #27272a;
+  background: #e5e7eb;
   border-radius: 2px;
   outline: none;
 }
@@ -131,18 +134,23 @@
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #fafafa;
+  background: #111827;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(255,255,255,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
 }
 
 .sliderLabels {
   display: flex;
   justify-content: space-between;
-  color: #71717a;
+  color: #9ca3af;
   font-size: 0.85rem;
   margin-top: 12px;
   font-weight: 500;
@@ -150,8 +158,8 @@
 
 .generateBtn {
   width: 100%;
-  background: #fafafa;
-  color: #09090b;
+  background: #111827;
+  color: #ffffff;
   border: none;
   border-radius: 12px;
   padding: 18px;
@@ -160,16 +168,19 @@
   cursor: pointer;
   margin-top: 40px;
   transition: all 0.2s ease;
+  box-shadow: 0 10px 20px rgba(17, 24, 39, 0.15);
 }
 
 .generateBtn:hover:not(:disabled) {
-  background: #e4e4e7;
-  transform: scale(1.02);
+  background: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(17, 24, 39, 0.2);
 }
 
 .generateBtn:disabled {
-  opacity: 0.5;
+  opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
 
 .emptyState, .loadingState {
@@ -179,21 +190,21 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #71717a;
+  color: #6b7280;
   min-height: 400px;
 }
 
 .robotIcon {
   font-size: 3.5rem;
   margin-bottom: 24px;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(250, 250, 250, 0.1);
-  border-top-color: #fafafa;
+  border: 3px solid rgba(17, 24, 39, 0.1);
+  border-top-color: #111827;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 24px;
@@ -208,24 +219,24 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  border-bottom: 1px solid #27272a;
+  border-bottom: 1px solid #e5e7eb;
   padding-bottom: 24px;
 }
 
 .resultHeader h2 {
   font-size: 1.4rem;
-  color: #fafafa;
-  font-weight: 500;
+  color: #111827;
+  font-weight: 700;
   margin: 0;
 }
 
 .savingsBox {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
   padding: 6px 14px;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
 }
@@ -242,23 +253,26 @@
   gap: 20px;
   align-items: center;
   padding: 16px;
-  background: #18181b;
-  border: 1px solid #27272a;
-  border-radius: 12px;
-  transition: border-color 0.2s;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 }
 
 .productRow:hover {
-  border-color: #3f3f46;
+  border-color: #d1d5db;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.05);
 }
 
 .rowImage {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   background: #fff;
   border-radius: 8px;
   padding: 8px;
+  border: 1px solid #f3f4f6;
 }
 
 .rowInfo {
@@ -266,24 +280,25 @@
 }
 
 .rowName {
-  color: #fafafa;
+  color: #111827;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1rem;
   line-height: 1.4;
   display: inline-block;
 }
 
 .rowName:hover {
-  color: #38bdf8;
+  text-decoration: underline;
 }
 
 .rowCategory {
-  color: #71717a;
-  font-size: 0.85rem;
+  color: #6b7280;
+  font-size: 0.8rem;
   margin-top: 6px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-weight: 500;
 }
 
 .rowPrices {
@@ -293,21 +308,21 @@
 }
 
 .rowDiscounted {
-  color: #fafafa;
-  font-weight: 600;
-  font-size: 1.2rem;
+  color: #111827;
+  font-weight: 800;
+  font-size: 1.25rem;
 }
 
 .rowOriginal {
-  color: #71717a;
+  color: #9ca3af;
   text-decoration: line-through;
   font-size: 0.9rem;
   margin-top: 4px;
 }
 
 .summaryBox {
-  background: #18181b;
-  border: 1px solid #27272a;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   padding: 24px 32px;
   border-radius: 16px;
   margin-bottom: 24px;
@@ -318,22 +333,22 @@
   justify-content: space-between;
   align-items: center;
   font-size: 1.1rem;
-  font-weight: 500;
-  color: #a1a1aa;
+  font-weight: 600;
+  color: #4b5563;
 }
 
 .totalPrice {
   font-size: 2.2rem;
-  font-weight: 400;
-  color: #fafafa;
+  font-weight: 700;
+  color: #111827;
   letter-spacing: -1px;
 }
 
 .totalsOriginal {
   display: flex;
   justify-content: space-between;
-  color: #71717a;
-  font-size: 0.9rem;
+  color: #6b7280;
+  font-size: 0.95rem;
   margin-top: 12px;
 }
 
@@ -341,17 +356,29 @@
   display: block;
   width: 100%;
   text-align: center;
-  background: #fafafa;
-  color: #09090b;
+  background: #2563eb;
+  color: #ffffff;
   padding: 18px;
   border-radius: 12px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.1rem;
   text-decoration: none;
   transition: all 0.2s ease;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
 }
 
 .buyAllBtn:hover {
-  background: #e4e4e7;
-  transform: scale(1.02);
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.25);
+}
+
+.errorState {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 20px;
 }
