@@ -44,6 +44,11 @@ export default function DealOfTheHour({ deals }) {
   const savings = deal.originalPrice - deal.discountedPrice;
   const percentage = Math.round((savings / deal.originalPrice) * 100);
 
+  let affiliateUrl = deal.amazonUrl || `https://www.amazon.in/dp/${deal.id}`;
+  if (!affiliateUrl.includes('tag=')) {
+    affiliateUrl += (affiliateUrl.includes('?') ? '&' : '?') + 'tag=ftfx-21';
+  }
+
   return (
     <div className={styles.bannerWrapper}>
       <div className={styles.bannerContainer}>
@@ -66,9 +71,9 @@ export default function DealOfTheHour({ deals }) {
             </div>
           </div>
 
-          <Link href={`/product/${deal.id}`} className={styles.claimButton}>
+          <a href={affiliateUrl} target="_blank" rel="noopener noreferrer" className={styles.claimButton}>
             Claim Now &rarr;
-          </Link>
+          </a>
         </div>
       </div>
     </div>
