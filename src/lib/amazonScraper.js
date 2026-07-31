@@ -151,7 +151,7 @@ export async function scrapeAmazonProductDetails(asin) {
       brand: brand,
       product_star_rating: rating.toString(),
       product_num_ratings: reviews,
-      product_url: url,
+      product_url: amazonUrl,
       product_photo: imageUrl,
       is_prime: isPrime,
       about_product: features,
