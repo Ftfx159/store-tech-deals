@@ -42,7 +42,8 @@ export default function SetupBuilderPage() {
         goal: goals.find(g => g.id === goal).name,
         totalPrice: data.data.totalPrice,
         originalPrice: data.data.originalPrice,
-        products: data.data.products
+        core: data.data.core,
+        accessories: data.data.accessories
       });
     } catch (err) {
       setError("Network error occurred while building setup.");
@@ -131,12 +132,16 @@ export default function SetupBuilderPage() {
                 </div>
               </div>
 
+              <div className={styles.sectionHeader}>
+                <h3>Core PC Components</h3>
+                <span className={styles.compatibilityBadge}>✓ 100% Compatible</span>
+              </div>
               <div className={styles.productList}>
-                {result.products.map(p => (
+                {result.core.map(p => (
                   <div key={p.id} className={styles.productRow}>
                     <img src={p.imageUrl} alt={p.name} className={styles.rowImage} />
                     <div className={styles.rowInfo}>
-                      <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 45)}...</Link>
+                      <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 50)}...</Link>
                       <div className={styles.rowCategory}>{p.category}</div>
                     </div>
                     <div className={styles.rowPrices}>
@@ -146,6 +151,29 @@ export default function SetupBuilderPage() {
                   </div>
                 ))}
               </div>
+
+              {result.accessories.length > 0 && (
+                <>
+                  <div className={styles.sectionHeader}>
+                    <h3>Recommended Accessories</h3>
+                  </div>
+                  <div className={styles.productList}>
+                    {result.accessories.map(p => (
+                      <div key={p.id} className={styles.productRow}>
+                        <img src={p.imageUrl} alt={p.name} className={styles.rowImage} />
+                        <div className={styles.rowInfo}>
+                          <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 50)}...</Link>
+                          <div className={styles.rowCategory}>{p.category}</div>
+                        </div>
+                        <div className={styles.rowPrices}>
+                          <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
+                          <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
 
               <div className={styles.summaryBox}>
                 <div className={styles.totals}>
