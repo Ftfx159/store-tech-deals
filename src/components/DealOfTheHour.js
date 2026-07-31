@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './DealOfTheHour.module.css';
 
-export default function DealOfTheHour({ deal }) {
+export default function DealOfTheHour({ deals }) {
   const [timeLeft, setTimeLeft] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // Calculate time until next top of the hour
@@ -21,11 +22,24 @@ export default function DealOfTheHour({ deal }) {
     };
 
     updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    const timerInterval = setInterval(updateTimer, 1000);
+    
+    // Shuffle deals every 6 seconds if multiple
+    let shuffleInterval;
+    if (deals && deals.length > 1) {
+      shuffleInterval = setInterval(() => {
+        setCurrentIndex(prev => (prev + 1) % deals.length);
+      }, 6000);
+    }
 
-  if (!deal) return null;
+    return () => {
+      clearInterval(timerInterval);
+      if (shuffleInterval) clearInterval(shuffleInterval);
+    };
+  }, [deals]);
+
+  if (!deals || deals.length === 0) return null;
+  const deal = deals[currentIndex];
 
   const savings = deal.originalPrice - deal.discountedPrice;
   const percentage = Math.round((savings / deal.originalPrice) * 100);

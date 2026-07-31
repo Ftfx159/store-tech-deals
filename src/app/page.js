@@ -7,7 +7,6 @@ import HeroSlider from "@/components/HeroSlider";
 import RevealSection from "@/components/RevealSection";
 import LiveCouponScanner from "@/components/LiveCouponScanner";
 import Link from "next/link";
-import DealOfTheHour from "@/components/DealOfTheHour";
 
 export default async function Home() {
   
@@ -62,24 +61,8 @@ export default async function Home() {
     cashbackAmount: topCouponProduct.originalPrice - topCouponProduct.discountedPrice 
   } : { couponCode: 'AUTOAPPLIED', cashbackAmount: maxSavings };
   
-  // Compute Deal of the Hour (highest discount percentage)
-  let bestDeal = null;
-  let maxDiscountPercent = 0;
-  for (const p of allProducts) {
-    if (p.originalPrice > p.discountedPrice) {
-      const pct = (p.originalPrice - p.discountedPrice) / p.originalPrice;
-      if (pct > maxDiscountPercent) {
-        maxDiscountPercent = pct;
-        bestDeal = p;
-      }
-    }
-  }
-  
   return (
     <div className={styles.main}>
-
-      {/* Deal of the Hour FOMO Banner */}
-      {bestDeal && <DealOfTheHour deal={bestDeal} />}
 
       {/* Recommended for You */}
       <RevealSection className={styles.hero}>
