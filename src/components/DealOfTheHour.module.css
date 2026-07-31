@@ -1,0 +1,163 @@
+.bannerWrapper {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(90deg, rgba(255, 71, 87, 0.1), rgba(255, 107, 129, 0.05));
+  border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bannerWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  100% { left: 200%; }
+}
+
+.bannerContainer {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.fomoBadge {
+  background: #ff4757;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+}
+
+.pulseIcon {
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); filter: brightness(1); }
+  to { transform: scale(1.2); filter: brightness(1.5); }
+}
+
+.dealContent {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.timerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,0,0,0.3);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.timerLabel {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #ff4757;
+  font-weight: 700;
+}
+
+.timerDigits {
+  font-size: 1.2rem;
+  font-weight: 800;
+  font-family: monospace;
+  color: #fff;
+}
+
+.productInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.productName {
+  margin: 0;
+  font-size: 1rem;
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+.priceData {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.currentPrice {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #2ed573;
+}
+
+.discountBadge {
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.claimButton {
+  background: #ff4757;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.claimButton:hover {
+  background: #ff6b81;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+}
+
+@media (max-width: 768px) {
+  .bannerContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .dealContent {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .productInfo {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .claimButton {
+    width: 100%;
+    text-align: center;
+  }
+}

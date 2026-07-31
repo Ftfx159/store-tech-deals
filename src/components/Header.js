@@ -30,7 +30,7 @@ export default function Header() {
         <SearchBar />
         
         <nav className={styles.nav}>
-          <Link href="/setup" className={styles.navLink} style={{ color: 'var(--accent-success)', fontWeight: 'bold' }}>Build a Setup</Link>
+          <Link href="/setup-builder" className={styles.navLink} style={{ color: 'var(--accent-success)', fontWeight: 'bold' }}>🤖 AI Builder</Link>
           <Link href="/flash-deals" className={styles.navLink}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '6px', display: 'inline-block', verticalAlign: 'text-bottom'}}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> 
             Flash Deals
