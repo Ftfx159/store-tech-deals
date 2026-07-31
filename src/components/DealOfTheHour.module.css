@@ -1,12 +1,13 @@
 .bannerWrapper {
   width: 100%;
   padding: 16px;
-  background: linear-gradient(90deg, rgba(255, 71, 87, 0.1), rgba(255, 107, 129, 0.05));
-  border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+  background: linear-gradient(90deg, #0d0d12, #1a1a24);
+  border-bottom: 2px solid #d4af37; /* Luxury Gold */
   display: flex;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
 }
 
 .bannerWrapper::before {
@@ -14,8 +15,8 @@
   position: absolute;
   top: 0; left: -100%;
   width: 50%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-  animation: shine 3s infinite;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+  animation: shine 4s infinite;
 }
 
 @keyframes shine {
@@ -28,21 +29,22 @@
   gap: 24px;
   max-width: 1200px;
   width: 100%;
+  z-index: 1;
 }
 
 .fomoBadge {
-  background: #ff4757;
-  color: white;
+  background: linear-gradient(90deg, #d4af37, #f9f0a6);
+  color: #111;
   padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 800;
+  border-radius: 4px;
+  font-weight: 900;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 8px;
   letter-spacing: 1px;
   white-space: nowrap;
-  box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
 }
 
 .pulseIcon {
@@ -66,17 +68,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.6);
   padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .timerLabel {
   font-size: 0.65rem;
   text-transform: uppercase;
-  color: #ff4757;
-  font-weight: 700;
+  color: #d4af37;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .timerDigits {
@@ -84,6 +87,7 @@
   font-weight: 800;
   font-family: monospace;
   color: #fff;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 .productInfo {
@@ -95,9 +99,10 @@
 
 .productName {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #f1f5f9;
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .priceData {
@@ -113,30 +118,32 @@
 }
 
 .discountBadge {
-  background: rgba(255, 71, 87, 0.1);
-  color: #ff4757;
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.8rem;
-  font-weight: 700;
-  border: 1px solid rgba(255, 71, 87, 0.3);
+  font-weight: 800;
+  border: 1px solid rgba(212, 175, 55, 0.5);
 }
 
 .claimButton {
-  background: #ff4757;
-  color: white;
+  background: linear-gradient(90deg, #d4af37, #f9f0a6);
+  color: #111;
   padding: 10px 24px;
-  border-radius: 8px;
+  border-radius: 4px;
   text-decoration: none;
-  font-weight: 700;
-  transition: all 0.2s;
+  font-weight: 800;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
   white-space: nowrap;
+  letter-spacing: 1px;
 }
 
 .claimButton:hover {
-  background: #ff6b81;
+  background: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
 }
 
 @media (max-width: 768px) {

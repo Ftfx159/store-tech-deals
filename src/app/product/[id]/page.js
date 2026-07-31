@@ -50,10 +50,7 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductPage({ params }) {
   const resolvedParams = await params;
-  let product = await prisma.product.findUnique({
-    where: { id: resolvedParams.id },
-    include: { priceHistory: { orderBy: { timestamp: 'asc' } } }
-  });
+  let product = await getProductById(resolvedParams.id);
   
   if (!product) {
     notFound();

@@ -68,7 +68,10 @@ export async function getProductsByTag(tag) {
 export async function getProductById(id) {
   try {
     // Instantly Serve from DB
-    const cachedProduct = await prisma.product.findUnique({ where: { id } });
+    const cachedProduct = await prisma.product.findUnique({ 
+      where: { id },
+      include: { priceHistory: { orderBy: { timestamp: 'asc' } } }
+    });
     if (cachedProduct) {
       return parseProductFields(cachedProduct);
     }
