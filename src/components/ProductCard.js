@@ -16,9 +16,10 @@ export default function ProductCard({ product }) {
   const [transform, setTransform] = useState("");
   const [imgSrc, setImgSrc] = useState(product.imageUrl || getAiFallbackUrl(product.name));
   const cardRef = useRef(null);
-  const { toggleWishlist, isInWishlist } = useStorage();
+  const { toggleWishlist, isInWishlist, toggleCompare, isInCompare, compareList } = useStorage();
 
   const isSaved = isInWishlist(product.id);
+  const isCompared = isInCompare(product.id);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -127,6 +128,13 @@ export default function ProductCard({ product }) {
               couponCode={product.couponCode} 
               fullWidth={true} 
             />
+            <button 
+              className={`${styles.compareBtn} ${isCompared ? styles.comparing : ''}`}
+              onClick={(e) => { e.preventDefault(); toggleCompare(product); }}
+              disabled={!isCompared && compareList.length >= 3}
+            >
+              {isCompared ? 'Added to Compare' : 'Compare ⚖️'}
+            </button>
           </div>
         </div>
       </div>

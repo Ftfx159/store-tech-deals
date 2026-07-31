@@ -11,12 +11,12 @@ const SYNC_SECRET = process.env.SYNC_SECRET || process.env.ADMIN_PASSWORD || 'Ta
 console.log(`=============================================`);
 console.log(`[Cron Daemon] Initialized`);
 console.log(`[Cron Daemon] Target URL : ${API_URL}/api/sync`);
-console.log(`[Cron Daemon] Schedule   : Every 15 minutes`);
+console.log(`[Cron Daemon] Schedule   : Every 30 minutes`);
 console.log(`=============================================`);
 console.log(`Leave this process running in the background (e.g. via PM2)`);
 
-// Schedule task to run every 15 minutes (*/15 * * * *)
-cron.schedule('*/15 * * * *', async () => {
+// Schedule task to run every 30 minutes (*/30 * * * *)
+cron.schedule('*/30 * * * *', async () => {
   const timestamp = new Date().toISOString();
   console.log(`\n[Cron Daemon] [${timestamp}] Executing background sync...`);
   

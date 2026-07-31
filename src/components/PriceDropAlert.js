@@ -8,14 +8,35 @@ export default function PriceDropAlert({ product }) {
   const [email, setEmail] = useState('');
   const { addToast } = useToast();
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) return;
     
-    // Mock API Call
-    addToast(`Alert set! We will email ${email} when the price drops.`);
-    setIsOpen(false);
-    setEmail('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email, 
+          productId: product.id, 
+          currentPrice: product.discountedPrice 
+        })
+      });
+
+      if (res.ok) {
+        addToast('success', `Alert set! We will email ${email} when the price drops.`);
+        setIsOpen(false);
+        setEmail('');
+      } else {
+        addToast('error', 'Failed to create alert. Please try again.');
+      }
+    } catch (e) {
+      addToast('error', 'Network error while creating alert.');
+    }
+    setLoading(false);
   };
 
   return (
@@ -49,8 +70,8 @@ export default function PriceDropAlert({ product }) {
                 className={styles.input}
                 required
               />
-              <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '16px' }}>
-                Create Alert
+              <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '16px' }} disabled={loading}>
+                {loading ? 'Creating...' : 'Create Alert'}
               </button>
             </form>
           </div>

@@ -25,4 +25,17 @@ model Product {
   couponCode      String?
   lastUpdated     DateTime @default(now()) @updatedAt
   searchQuery     String?  // the keyword used to find this product
+
+  alerts          PriceAlert[]
+}
+
+model PriceAlert {
+  id           String   @id @default(cuid())
+  email        String
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  targetPrice  Float
+  createdAt    DateTime @default(now())
+  
+  @@unique([email, productId])
 }

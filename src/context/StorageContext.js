@@ -6,6 +6,7 @@ const StorageContext = createContext();
 export function StorageProvider({ children }) {
   const [wishlist, setWishlist] = useState([]);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
+  const [compareList, setCompareList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load from local storage on mount (avoids hydration mismatch)
@@ -16,6 +17,9 @@ export function StorageProvider({ children }) {
 
       const savedRecent = localStorage.getItem('ftfx_recent');
       if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent));
+
+      const savedCompare = localStorage.getItem('ftfx_compare');
+      if (savedCompare) setCompareList(JSON.parse(savedCompare));
     } catch (e) {
       console.error("Failed to load local storage", e);
     }
@@ -35,6 +39,13 @@ export function StorageProvider({ children }) {
       localStorage.setItem('ftfx_recent', JSON.stringify(recentlyViewed));
     }
   }, [recentlyViewed, isLoaded]);
+
+  // Save compare list
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('ftfx_compare', JSON.stringify(compareList));
+    }
+  }, [compareList, isLoaded]);
 
   // Wishlist Actions
   const toggleWishlist = (product) => {
@@ -62,6 +73,26 @@ export function StorageProvider({ children }) {
     });
   };
 
+  // Compare Actions
+  const toggleCompare = (product) => {
+    setCompareList(prev => {
+      const exists = prev.some(item => item.id === product.id);
+      if (exists) {
+        return prev.filter(item => item.id !== product.id);
+      } else {
+        if (prev.length >= 3) {
+          // If already 3, replace the oldest one (index 0)
+          return [...prev.slice(1), product];
+        }
+        return [...prev, product];
+      }
+    });
+  };
+
+  const isInCompare = (productId) => {
+    return compareList.some(item => item.id === productId);
+  };
+
   return (
     <StorageContext.Provider value={{
       wishlist,
@@ -69,6 +100,9 @@ export function StorageProvider({ children }) {
       isInWishlist,
       recentlyViewed,
       addRecentlyViewed,
+      compareList,
+      toggleCompare,
+      isInCompare,
       isLoaded
     }}>
       {children}

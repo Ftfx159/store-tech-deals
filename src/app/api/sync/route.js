@@ -1,6 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { searchAmazonProducts } from '@/lib/amazonApi';
+import nodemailer from 'nodemailer';
+
+// Configure Nodemailer (Using ethereal/sandbox if no real SMTP provided)
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || "smtp.ethereal.email",
+  port: process.env.SMTP_PORT || 587,
+  auth: {
+    user: process.env.SMTP_USER || "test@ethereal.email",
+    pass: process.env.SMTP_PASS || "testpass",
+  },
+});
 
 export async function POST(request) {
   try {
@@ -83,6 +94,38 @@ export async function POST(request) {
         const liveProducts = await searchAmazonProducts(query);
         
         for (const p of liveProducts) {
+          // Check for price drop alerts before upserting
+          try {
+            const triggeredAlerts = await prisma.priceAlert.findMany({
+              where: {
+                productId: p.id,
+                targetPrice: { gte: p.discountedPrice }
+              }
+            });
+
+            if (triggeredAlerts.length > 0) {
+              for (const alert of triggeredAlerts) {
+                console.log(`[Sync API] 📧 Sending Price Drop Alert to ${alert.email} for ${p.name}`);
+                
+                // Fire off email asynchronously
+                transporter.sendMail({
+                  from: '"FTFX Tech Deals" <alerts@ftfxtechdeals.com>',
+                  to: alert.email,
+                  subject: `Price Drop Alert: ${p.name.slice(0, 30)}...`,
+                  html: `<h3>Great news!</h3>
+                         <p>The price for <strong>${p.name}</strong> just dropped to <strong>₹${p.discountedPrice}</strong>.</p>
+                         <p>This is below your target price of ₹${alert.targetPrice}!</p>
+                         <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/product/${p.id}">Click here to grab the deal!</a></p>`
+                }).catch(err => console.error("Email failed:", err.message));
+
+                // Delete the alert so we don't spam them repeatedly
+                await prisma.priceAlert.delete({ where: { id: alert.id } });
+              }
+            }
+          } catch (alertError) {
+            console.error(`[Sync API] Alert processing failed for ${p.id}`, alertError);
+          }
+
           await prisma.product.upsert({
             where: { id: p.id },
             update: {

@@ -26,8 +26,12 @@ function getRandomHeaders() {
 
 export async function scrapeAmazonSearch(keyword) {
   try {
-    const url = `https://www.amazon.in/s?k=${encodeURIComponent(keyword)}`;
-    const response = await fetch(url, { headers: getRandomHeaders() });
+    const amazonUrl = `https://www.amazon.in/s?k=${encodeURIComponent(keyword)}`;
+    const scraperApiKey = process.env.SCRAPER_API_KEY;
+    const url = scraperApiKey ? `http://api.scraperapi.com?api_key=${scraperApiKey}&url=${encodeURIComponent(amazonUrl)}` : amazonUrl;
+    
+    // If using ScraperAPI, we don't necessarily need the custom headers, but it doesn't hurt.
+    const response = await fetch(url, scraperApiKey ? {} : { headers: getRandomHeaders() });
     const html = await response.text();
 
     if (html.includes('api/services/captcha') || html.includes('validateCaptcha')) {
@@ -88,8 +92,11 @@ export async function scrapeAmazonSearch(keyword) {
 
 export async function scrapeAmazonProductDetails(asin) {
   try {
-    const url = `https://www.amazon.in/dp/${asin}`;
-    const response = await fetch(url, { headers: getRandomHeaders() });
+    const amazonUrl = `https://www.amazon.in/dp/${asin}`;
+    const scraperApiKey = process.env.SCRAPER_API_KEY;
+    const url = scraperApiKey ? `http://api.scraperapi.com?api_key=${scraperApiKey}&url=${encodeURIComponent(amazonUrl)}` : amazonUrl;
+
+    const response = await fetch(url, scraperApiKey ? {} : { headers: getRandomHeaders() });
     const html = await response.text();
 
     if (html.includes('api/services/captcha') || html.includes('validateCaptcha')) {
