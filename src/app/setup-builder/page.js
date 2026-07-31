@@ -23,6 +23,12 @@ export default function SetupBuilderPage() {
     setBudget(80000);
   };
 
+  const handleImageError = (e, productName) => {
+    e.target.onerror = null; 
+    const cleanName = productName ? productName.replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 80) : 'tech gadget';
+    e.target.src = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanName + ' premium tech product photography studio lighting')}?width=400&height=400&nologo=true`;
+  };
+
   const handleBuyEntireSetup = () => {
     if (!result) return;
     const allItems = [...result.core, ...result.accessories];
@@ -154,7 +160,12 @@ export default function SetupBuilderPage() {
               <div className={styles.productList}>
                 {result.core.map(p => (
                   <div key={p.id} className={styles.productRow}>
-                    <img src={p.imageUrl} alt={p.name} className={styles.rowImage} />
+                    <img 
+                      src={p.imageUrl} 
+                      alt={p.name} 
+                      className={styles.rowImage} 
+                      onError={(e) => handleImageError(e, p.name)} 
+                    />
                     <div className={styles.rowInfo}>
                       <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 50)}...</Link>
                       <div className={styles.rowCategory}>{p.category}</div>
@@ -185,7 +196,12 @@ export default function SetupBuilderPage() {
                   <div className={styles.productList}>
                     {result.accessories.map(p => (
                       <div key={p.id} className={styles.productRow}>
-                        <img src={p.imageUrl} alt={p.name} className={styles.rowImage} />
+                        <img 
+                          src={p.imageUrl} 
+                          alt={p.name} 
+                          className={styles.rowImage} 
+                          onError={(e) => handleImageError(e, p.name)} 
+                        />
                         <div className={styles.rowInfo}>
                           <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 50)}...</Link>
                           <div className={styles.rowCategory}>{p.category}</div>
