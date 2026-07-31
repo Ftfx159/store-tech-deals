@@ -118,6 +118,8 @@
 }
 
 .slider {
+  -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   accent-color: #fafafa;
   height: 4px;
