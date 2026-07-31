@@ -370,14 +370,17 @@
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-  .rowBuyBtn {
+  .rowCartBtn {
     width: 100%;
     text-align: center;
     margin-top: 0.5rem;
+    justify-content: center;
   }
-  .rowPrices {
+  .rowActions {
     margin-right: 0;
     align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
   }
 }
 
@@ -403,29 +406,38 @@
   font-weight: 500;
 }
 
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .rowPrices {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.1rem;
-  margin-right: 1rem;
 }
 
-.rowBuyBtn {
-  background: #0f172a;
+.rowCartBtn {
+  background: #f59e0b;
   color: #fff;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
-.rowBuyBtn:hover {
-  background: #3b82f6;
+.rowCartBtn:hover {
+  background: #d97706;
   transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
 }
 
 .rowDiscounted {

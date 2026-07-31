@@ -159,13 +159,20 @@ export default function SetupBuilderPage() {
                       <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 50)}...</Link>
                       <div className={styles.rowCategory}>{p.category}</div>
                     </div>
-                    <div className={styles.rowPrices}>
-                      <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
-                      <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
+                    <div className={styles.rowActions}>
+                      <div className={styles.rowPrices}>
+                        <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
+                        <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
+                      </div>
+                      <a 
+                        href={`https://www.amazon.in/gp/aws/cart/add.html?AssociateTag=ftfx-21&ASIN.1=${p.id}&Quantity.1=1`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className={styles.rowCartBtn}
+                      >
+                        🛒 Add
+                      </a>
                     </div>
-                    <a href={p.amazonUrl} target="_blank" rel="noopener noreferrer" className={styles.rowBuyBtn}>
-                      Buy Now &rarr;
-                    </a>
                   </div>
                 ))}
               </div>
@@ -183,13 +190,20 @@ export default function SetupBuilderPage() {
                           <Link href={`/product/${p.id}`} className={styles.rowName}>{p.name.slice(0, 50)}...</Link>
                           <div className={styles.rowCategory}>{p.category}</div>
                         </div>
-                        <div className={styles.rowPrices}>
-                          <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
-                          <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
+                        <div className={styles.rowActions}>
+                          <div className={styles.rowPrices}>
+                            <span className={styles.rowDiscounted}>₹{p.discountedPrice.toLocaleString('en-IN')}</span>
+                            <span className={styles.rowOriginal}>₹{p.originalPrice.toLocaleString('en-IN')}</span>
+                          </div>
+                          <a 
+                            href={`https://www.amazon.in/gp/aws/cart/add.html?AssociateTag=ftfx-21&ASIN.1=${p.id}&Quantity.1=1`} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className={styles.rowCartBtn}
+                          >
+                            🛒 Add
+                          </a>
                         </div>
-                        <a href={p.amazonUrl} target="_blank" rel="noopener noreferrer" className={styles.rowBuyBtn}>
-                          Buy Now &rarr;
-                        </a>
                       </div>
                     ))}
                   </div>
