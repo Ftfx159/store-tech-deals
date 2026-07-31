@@ -158,7 +158,9 @@ export async function getTrendingProducts() {
 export function getActiveSaleEvent() {
   const month = new Date().getMonth(); // 0-indexed (0 = Jan, 11 = Dec)
   
-  if (month >= 3 && month <= 5) {
+  if (month === 6 || month === 7) {
+    return { name: "Great Freedom Sale Starts 7th Aug!", query: "great freedom sale tech deals" };
+  } else if (month >= 3 && month <= 5) {
     return { name: "Amazon Summer Sale Live!", query: "amazon summer sale tech deals" };
   } else if (month >= 8 && month <= 9) {
     return { name: "Great Indian Festival Deals", query: "amazon great indian festival tech" };

@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import AIChatbot from "@/components/AIChatbot";
 import FomoEngine from "@/components/FomoEngine";
 import Footer from "@/components/Footer";
+import SalePopup from "@/components/SalePopup";
 import { ToastProvider } from "@/context/ToastContext";
 import { StorageProvider } from "@/context/StorageContext";
 
@@ -66,6 +67,7 @@ export default function RootLayout({ children }) {
             <main>{children}</main>
             <AIChatbot />
             <FomoEngine />
+            <SalePopup />
             <Footer />
           </ToastProvider>
         </StorageProvider>
