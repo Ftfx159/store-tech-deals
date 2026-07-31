@@ -1,0 +1,91 @@
+.scoreContainer {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.iconBox {
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.2);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.textData {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  font-weight: 600;
+}
+
+.verdict {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.gaugeTrack {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.gaugeFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gaugeHot {
+  color: #ff4757;
+  background-color: #ff4757;
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+}
+.verdict.gaugeHot { background: none; box-shadow: none; text-shadow: 0 0 10px rgba(255, 71, 87, 0.3); }
+
+.gaugeGood {
+  color: #2ed573;
+  background-color: #2ed573;
+  box-shadow: 0 0 10px rgba(46, 213, 115, 0.5);
+}
+.verdict.gaugeGood { background: none; box-shadow: none; }
+
+.gaugeFair {
+  color: #ffa502;
+  background-color: #ffa502;
+}
+.verdict.gaugeFair { background: none; box-shadow: none; }
+
+.gaugeCold {
+  color: #1e90ff;
+  background-color: #1e90ff;
+}
+.verdict.gaugeCold { background: none; box-shadow: none; }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #666;
+}

@@ -9,7 +9,9 @@ import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
 import BackButton from "@/components/BackButton";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import PriceDropAlert from "@/components/PriceDropAlert";
+import PriceDropAlert from '@/components/PriceDropAlert';
+import PriceHistoryChart from '@/components/PriceHistoryChart';
+import DealQualityScore from '@/components/DealQualityScore';
 import ComparisonTable from "@/components/ComparisonTable";
 import AIDealVerdict from "@/components/AIDealVerdict";
 import ImageMagnifier from "@/components/ImageMagnifier";
@@ -47,8 +49,11 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProductPage({ params }) {
-  const { id } = await params;
-  const product = await getProductById(id);
+  const resolvedParams = await params;
+  let product = await prisma.product.findUnique({
+    where: { id: resolvedParams.id },
+    include: { priceHistory: { orderBy: { timestamp: 'asc' } } }
+  });
   
   if (!product) {
     notFound();
@@ -112,6 +117,7 @@ export default async function ProductPage({ params }) {
           <div className={`glass-panel ${styles.mainImageContainer}`}>
             <ImageMagnifier src={product.imageUrl} alt={product.name} />
           </div>
+          <PriceHistoryChart data={product.priceHistory || []} />
         </div>
 
         <div className={styles.details}>
@@ -170,7 +176,12 @@ export default async function ProductPage({ params }) {
 
           <BundleAndSave mainProduct={product} relatedProducts={relatedProducts} />
 
-          <div className={styles.actionBox}>
+          <div className={styles.ctaGroup}>
+            <DealQualityScore 
+              currentPrice={product.discountedPrice}
+              originalPrice={product.originalPrice}
+              priceHistory={product.priceHistory || []}
+            />
             <BuyButton 
               amazonUrl={affiliateUrl} 
               couponCode={product.couponCode} 

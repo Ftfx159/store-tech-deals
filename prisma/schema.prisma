@@ -27,6 +27,7 @@ model Product {
   searchQuery     String?  // the keyword used to find this product
 
   alerts          PriceAlert[]
+  priceHistory    PriceHistory[]
 }
 
 model PriceAlert {
@@ -38,4 +39,14 @@ model PriceAlert {
   createdAt    DateTime @default(now())
   
   @@unique([email, productId])
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  price     Float
+  timestamp DateTime @default(now())
+
+  @@index([productId, timestamp])
 }

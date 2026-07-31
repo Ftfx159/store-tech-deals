@@ -126,7 +126,7 @@ export async function POST(request) {
             console.error(`[Sync API] Alert processing failed for ${p.id}`, alertError);
           }
 
-          await prisma.product.upsert({
+          const upsertedProduct = await prisma.product.upsert({
             where: { id: p.id },
             update: {
               name: p.name,
@@ -160,6 +160,15 @@ export async function POST(request) {
               searchQuery: query
             }
           });
+          
+          // Record price history
+          await prisma.priceHistory.create({
+            data: {
+              productId: upsertedProduct.id,
+              price: upsertedProduct.discountedPrice
+            }
+          });
+          
           totalUpdated++;
         }
       } catch (err) {
