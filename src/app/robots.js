@@ -7,6 +7,6 @@ export default function robots() {
       allow: '/',
       disallow: ['/private/'],
     },
-    sitemap: 'https://ftfxtechdeals.com/sitemap.xml',
+    sitemap: 'https://orvessa.com/sitemap.xml',
   }
 }

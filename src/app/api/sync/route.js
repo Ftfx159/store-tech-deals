@@ -109,7 +109,7 @@ export async function POST(request) {
                 
                 // Fire off email asynchronously
                 transporter.sendMail({
-                  from: '"FTFX Tech Deals" <alerts@ftfxtechdeals.com>',
+                  from: '"Orvessa" <alerts@orvessa.com>',
                   to: alert.email,
                   subject: `Price Drop Alert: ${p.name.slice(0, 30)}...`,
                   html: `<h3>Great news!</h3>

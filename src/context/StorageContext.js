@@ -12,13 +12,13 @@ export function StorageProvider({ children }) {
   // Load from local storage on mount (avoids hydration mismatch)
   useEffect(() => {
     try {
-      const savedWishlist = localStorage.getItem('ftfx_wishlist');
+      const savedWishlist = localStorage.getItem('orvessa_wishlist');
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
 
-      const savedRecent = localStorage.getItem('ftfx_recent');
+      const savedRecent = localStorage.getItem('orvessa_recent');
       if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent));
 
-      const savedCompare = localStorage.getItem('ftfx_compare');
+      const savedCompare = localStorage.getItem('orvessa_compare');
       if (savedCompare) setCompareList(JSON.parse(savedCompare));
     } catch (e) {
       console.error("Failed to load local storage", e);
@@ -29,21 +29,21 @@ export function StorageProvider({ children }) {
   // Save wishlist
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('ftfx_wishlist', JSON.stringify(wishlist));
+      localStorage.setItem('orvessa_wishlist', JSON.stringify(wishlist));
     }
   }, [wishlist, isLoaded]);
 
   // Save recently viewed
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('ftfx_recent', JSON.stringify(recentlyViewed));
+      localStorage.setItem('orvessa_recent', JSON.stringify(recentlyViewed));
     }
   }, [recentlyViewed, isLoaded]);
 
   // Save compare list
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('ftfx_compare', JSON.stringify(compareList));
+      localStorage.setItem('orvessa_compare', JSON.stringify(compareList));
     }
   }, [compareList, isLoaded]);
 

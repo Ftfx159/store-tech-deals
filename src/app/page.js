@@ -79,7 +79,7 @@ export default async function Home() {
               <span className="text-gradient">Never Overpay Again.</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              FTFX Tech Deals finds the best Amazon India tech discounts and automatically reveals exclusive coupon codes for maximum savings.
+              Orvessa finds the best Amazon India tech discounts and automatically reveals exclusive coupon codes for maximum savings.
             </p>
             <div className={styles.heroActions}>
               <Link href="/search?q=coupons" className="btn btn-primary">

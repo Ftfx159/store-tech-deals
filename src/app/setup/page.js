@@ -114,7 +114,7 @@ export default function SetupConfigurator() {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('FTFX-PC-Quotation.pdf');
+    pdf.save('Orvessa-PC-Quotation.pdf');
   };
 
   const getAIPanelClass = (type) => {

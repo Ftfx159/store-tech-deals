@@ -6,7 +6,7 @@ import styles from "../search/page.module.css";
 import flashStyles from "./flash.module.css";
 
 export const metadata = {
-  title: "Flash Deals | FTFX Tech Deals",
+  title: "Flash Deals | Orvessa",
 };
 
 export default async function FlashDealsPage() {

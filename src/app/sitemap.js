@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
 
 export default async function sitemap() {
-  const baseUrl = "https://ftfxtechdeals.com";
+  const baseUrl = "https://orvessa.com";
 
   let products = [];
   try {

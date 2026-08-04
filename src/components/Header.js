@@ -24,7 +24,7 @@ export default function Header() {
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={`container ${styles.headerContainer}`}>
         <a href="/" className={styles.logo}>
-          <span className="text-gradient">FTFX</span> Tech Deals
+          <span className="text-gradient">Orvessa</span>
         </a>
         
         <SearchBar />

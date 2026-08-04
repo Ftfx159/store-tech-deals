@@ -23,19 +23,19 @@ export async function generateMetadata({ params }) {
   const product = await getProductById(id);
   if (!product) return { title: "Product Not Found" };
   
-  const title = `${product.name.slice(0, 50)}... | FTFX Tech Deals`;
+  const title = `${product.name.slice(0, 50)}... | Orvessa`;
   const description = `Buy ${product.name} at a discount. Save ₹${product.originalPrice - product.discountedPrice}. Compare features and read reviews.`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: `https://ftfxtechdeals.com/product/${id}`,
+      canonical: `https://orvessa.com/product/${id}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://ftfxtechdeals.com/product/${id}`,
+      url: `https://orvessa.com/product/${id}`,
       images: [{ url: product.imageUrl }],
       type: "article",
     },
@@ -83,7 +83,7 @@ export default async function ProductPage({ params }) {
     "sku": product.id,
     "offers": {
       "@type": "Offer",
-      "url": `https://ftfxtechdeals.com/product/${product.id}`,
+      "url": `https://orvessa.com/product/${product.id}`,
       "priceCurrency": "INR",
       "price": product.discountedPrice,
       "priceValidUntil": new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
