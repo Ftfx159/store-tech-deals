@@ -143,29 +143,29 @@ a {
   background-clip: text;
 }
 
-/* Premium Orvessa Brand Styling */
+/* Premium Orvessa Brand Styling - Rainbow Edition */
 .brand-luxury {
   font-family: 'Playfair Display', serif;
   background: linear-gradient(
     to right, 
-    #462523 0, 
-    #cb9b51 22%, 
-    #f6e27a 45%, 
-    #f6f2c0 50%, 
-    #f6e27a 55%, 
-    #cb9b51 78%, 
-    #462523 100%
+    #ff2a2a 0%, 
+    #ff7a00 15%, 
+    #ffc900 30%, 
+    #00d936 45%, 
+    #0091ff 60%, 
+    #7f00ff 75%, 
+    #ff2a2a 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shineGold 6s linear infinite;
-  text-shadow: 0 4px 12px rgba(203, 155, 81, 0.15);
+  animation: shineRainbow 6s linear infinite;
+  text-shadow: 0 4px 12px rgba(127, 0, 255, 0.15);
   letter-spacing: 0.5px;
 }
 
-@keyframes shineGold {
+@keyframes shineRainbow {
   to {
     background-position: 200% center;
   }
