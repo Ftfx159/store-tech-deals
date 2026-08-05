@@ -6,8 +6,8 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContainer}`}>
         <div className={styles.brandSection}>
-          <Link href="/" className={styles.logo}>
-            <span className="text-gradient">Orvessa</span>
+          <Link href="/" className={styles.footerLogo} style={{textDecoration: 'none'}}>
+            <span className="brand-luxury">Orvessa</span>
           </Link>
           <p className={styles.tagline}>Smart Tech. Bigger Savings.</p>
           <p className={styles.description}>
