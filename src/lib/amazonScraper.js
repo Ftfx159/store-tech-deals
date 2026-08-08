@@ -46,15 +46,19 @@ export async function scrapeAmazonSearch(keyword) {
       const asin = $(el).attr('data-asin');
       if (!asin) return;
 
-      const title = $(el).find('h2 a span').text().trim();
+      const title = $(el).find('h2 a span').text().trim() || $(el).find('h2 span').text().trim() || $(el).find('.a-size-medium.a-color-base.a-text-normal').text().trim();
       if (!title) return;
 
       const priceText = $(el).find('.a-price-whole').first().text().replace(/,/g, '').trim();
-      const originalPriceText = $(el).find('.a-text-price .a-offscreen').first().text().replace(/[^0-9]/g, '').trim();
-      const ratingText = $(el).find('.a-icon-alt').first().text();
-      const reviewsText = $(el).find('span.a-size-base.s-underline-text').first().text().replace(/,/g, '');
-      const imageUrl = $(el).find('.s-image').attr('src');
-      const isPrime = $(el).find('.a-icon-prime').length > 0;
+      let originalPriceText = $(el).find('.a-text-price .a-offscreen').first().text().replace(/[^0-9]/g, '').trim();
+      if (!originalPriceText) {
+        originalPriceText = $(el).find('span[data-a-strike="true"] .a-offscreen').first().text().replace(/[^0-9]/g, '').trim();
+      }
+      
+      const ratingText = $(el).find('.a-icon-alt').first().text() || $(el).find('i[data-cy="reviews-ratings-slot"]').text();
+      const reviewsText = $(el).find('span.a-size-base.s-underline-text').first().text().replace(/,/g, '') || $(el).find('.a-size-base').first().text().replace(/,/g, '');
+      const imageUrl = $(el).find('.s-image').attr('src') || $(el).find('img.s-image').attr('src');
+      const isPrime = $(el).find('.a-icon-prime').length > 0 || $(el).find('i.a-icon-prime').length > 0;
 
       // Extract values
       const discountedPrice = parseFloat(priceText);
@@ -106,11 +110,14 @@ export async function scrapeAmazonProductDetails(asin) {
 
     const $ = cheerio.load(html);
 
-    const title = $('#productTitle').text().trim();
+    const title = $('#productTitle').text().trim() || $('.product-title-word-break').text().trim();
     if (!title) return null;
 
-    const priceText = $('.a-price-whole').first().text().replace(/,/g, '').trim();
-    const originalPriceText = $('.a-text-price .a-offscreen').first().text().replace(/[^0-9]/g, '').trim();
+    const priceText = $('.a-price-whole').first().text().replace(/,/g, '').trim() || $('#priceblock_ourprice').text().replace(/[^0-9.]/g, '').trim();
+    let originalPriceText = $('.a-text-price .a-offscreen').first().text().replace(/[^0-9]/g, '').trim();
+    if (!originalPriceText) {
+      originalPriceText = $('#priceblock_dealprice').text().replace(/[^0-9]/g, '').trim() || priceText;
+    }
     
     // Check if out of stock
     const availabilityText = $('#availability span').text().toLowerCase();
