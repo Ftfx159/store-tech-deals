@@ -62,8 +62,31 @@ export default async function SearchPage({ searchParams }) {
     results.sort((a, b) => b.rating - a.rating);
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://orvessa.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": query ? `Search: ${query}` : "All Products",
+        "item": `https://orvessa.com/search${query ? `?q=${encodeURIComponent(query)}` : ''}`
+      }
+    ]
+  };
+
   return (
     <div className={`container ${styles.searchPage}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className={styles.header}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <BackButton />

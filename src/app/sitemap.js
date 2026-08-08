@@ -35,6 +35,18 @@ export default async function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'hourly',
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/flash-deals`,
+      lastModified: new Date(),
+      changeFrequency: 'hourly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/setup-builder`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
     }
   ];
 

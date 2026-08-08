@@ -5,7 +5,7 @@ export default function robots() {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/private/'],
+      disallow: ['/private/', '/api/', '/admin/'],
     },
     sitemap: 'https://orvessa.com/sitemap.xml',
   }

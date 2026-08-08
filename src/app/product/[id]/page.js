@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
   const product = await getProductById(id);
   if (!product) return { title: "Product Not Found" };
   
-  const title = `${product.name.slice(0, 50)}... | Orvessa`;
+  const title = `${product.name.substring(0, 50).trim()} - Best Price | Orvessa`;
   const description = `Buy ${product.name} at a discount. Save ₹${product.originalPrice - product.discountedPrice}. Compare features and read reviews.`;
 
   return {
@@ -96,12 +96,36 @@ export default async function ProductPage({ params }) {
       "reviewCount": product.reviews
     } : undefined
   };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://orvessa.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": product.category,
+        "item": `https://orvessa.com/search?q=${encodeURIComponent(product.category.toLowerCase())}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": `https://orvessa.com/product/${product.id}`
+      }
+    ]
+  };
 
   return (
     <div className={`container ${styles.productPage}`}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([productSchema, breadcrumbSchema]) }}
       />
       <div className={styles.breadcrumbs} style={{ display: 'flex', alignItems: 'center' }}>
         <BackButton />

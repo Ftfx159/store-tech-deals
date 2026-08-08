@@ -67,7 +67,8 @@ export default function SearchBar() {
     <div className={styles.searchContainer} ref={dropdownRef}>
       <form onSubmit={handleSearch} className={styles.searchBar}>
         <input
-          type="text"
+          type="search"
+          aria-label="Search for products"
           placeholder="Search for laptops, monitors, accessories..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -76,13 +77,13 @@ export default function SearchBar() {
           }}
           className={styles.searchInput}
         />
-        <button type="submit" className={styles.searchBtn} aria-label="Search">
+        <button type="submit" className={styles.searchBtn} aria-label="Submit Search">
           {isSearching ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={styles.spinIcon}>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={styles.spinIcon}>
               <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
             </svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
               <path d="M21 21l-4.35-4.35" />
             </svg>

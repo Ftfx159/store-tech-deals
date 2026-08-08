@@ -73,8 +73,26 @@ export default function SetupBuilderPage() {
     setLoading(false);
   };
 
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Orvessa Smart Ecosystem Builder",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "AI-powered tool that instantly builds your dream gaming or productivity setup based on your budget, finding the best compatible deals.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    }
+  };
+
   return (
     <div className={`container ${styles.builderContainer}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+      />
       <div className={styles.headerBox}>
         <div className={styles.aiBadge}>✨ AI Powered</div>
         <h1 className={styles.title}>Smart Ecosystem Builder</h1>
@@ -162,7 +180,11 @@ export default function SetupBuilderPage() {
                   <div key={p.id} className={styles.productRow}>
                     <img 
                       src={p.imageUrl} 
-                      alt={p.name} 
+                      alt={p.name}
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                      decoding="async" 
                       className={styles.rowImage} 
                       onError={(e) => handleImageError(e, p.name)} 
                     />
@@ -199,6 +221,10 @@ export default function SetupBuilderPage() {
                         <img 
                           src={p.imageUrl} 
                           alt={p.name} 
+                          width="64"
+                          height="64"
+                          loading="lazy"
+                          decoding="async"
                           className={styles.rowImage} 
                           onError={(e) => handleImageError(e, p.name)} 
                         />

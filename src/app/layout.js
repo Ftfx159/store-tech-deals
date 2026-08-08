@@ -14,18 +14,45 @@ export const metadata = {
   metadataBase: new URL('https://orvessa.com'),
   title: "Orvessa | Smart Tech. Bigger Savings.",
   description: "Discover the best daily deals, lightning offers, coupons, and price drops on genuine electronic products from Amazon India.",
-  keywords: "technology, electronics, amazon deals, laptops, gadgets, india, discounts, tech sales",
+  keywords: ["technology", "electronics", "amazon deals", "laptops", "gadgets", "india", "discounts", "tech sales", "PC builder", "gaming setup", "Orvessa"],
+  authors: [{ name: "Orvessa Team" }],
+  creator: "Orvessa",
+  publisher: "Orvessa",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: "Orvessa | Smart Tech. Bigger Savings.",
     description: "Discover the best daily deals, lightning offers, coupons, and price drops on genuine electronic products from Amazon India.",
     url: "https://orvessa.com",
     siteName: "Orvessa",
+    images: [
+      {
+        url: "/icon.png",
+        width: 800,
+        height: 600,
+        alt: "Orvessa - Smart Tech. Bigger Savings.",
+      },
+    ],
+    locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Orvessa | Smart Tech. Bigger Savings.",
     description: "Discover the best daily deals, lightning offers, coupons, and price drops on genuine electronic products from Amazon India.",
+    images: ["/icon.png"],
   },
 };
 
@@ -56,6 +83,11 @@ const globalSchema = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://m.media-amazon.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://images-eu.ssl-images-amazon.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://image.pollinations.ai" crossOrigin="anonymous" />
+      </head>
       <body className={inter.className}>
         <script
           type="application/ld+json"
